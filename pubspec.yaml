@@ -1,0 +1,49 @@
+name: zakir
+description: A new Flutter project.
+
+version: 1.0.0+2
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: 0.1.3
+  audioplayers: 0.15.1
+  path_provider: 1.6.11
+  http: 0.12.2
+  sliding_up_panel: 1.0.2
+  google_fonts: 1.1.0
+  shared_preferences: 0.5.8
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/logo-2.png"
+
+dev_dependencies:
+
+  flutter_launcher_icons: 0.7.5
+
+  flutter_test:
+    sdk: flutter
+
+flutter:
+
+  uses-material-design: true
+  assets:  
+    - assets/
+    - assets/data/
+    - assets/icons/    
+    - assets/images/    
+
+  fonts:
+    - family: Traditional-Arabic
+      fonts:
+        - asset: fonts/Traditional-Arabic.ttf
+
+
+
+
