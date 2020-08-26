@@ -79,11 +79,11 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           ListView(
             children: <Widget>[
-              // _listItem(
-              //   "Uyanınca Yapılan Zikirler",
-              //   ZikirType.Awakening.index,
-              //   AppIcons.awakening,
-              // ),
+              _listItem(
+                "Uyanınca Yapılan Zikirler",
+                ZikirType.Awakening.index,
+                AppIcons.awakening,
+              ),
               _listItem(
                 "Sabah Zikirleri",
                 ZikirType.Morning.index,
@@ -96,11 +96,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 AppIcons.evening,
                 subtitle: "İkindi kerahet vakti girmesinden itibaren",
               ),
-              // _listItem(
-              //   "Uyku Öncesi Zikirler",
-              //   ZikirType.BeforeSleep.index,
-              //   AppIcons.beforeSleep,
-              // ),
+              _listItem(
+                "Üzüntü ve Keder Anında Yapılan Zikirler",
+                ZikirType.Sadness.index,
+                AppIcons.sadness,
+              ),
+              _listItem(
+                "Sıkıntı Anında Yapılan Zikirler",
+                ZikirType.Trouble.index,
+                AppIcons.trouble,
+              ),
             ],
           ),
           _lastType != null && _lastIndex > 0
@@ -178,7 +183,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     color: AppColors.green,
                   ),
                 ),
-                Divider(),
+                Divider(color: Colors.black26),
               ],
             ),
           )
@@ -234,7 +239,7 @@ class _MyHomePageState extends State<MyHomePage> {
   _getLastPosition() async {
     SharedPreferences instances = await SharedPreferences.getInstance();
     setState(() {
-      this._lastIndex = instances.getInt('lastZikirIndex');
+      this._lastIndex = instances.getInt('lastZikirIndex') ?? 0;
       this._lastType = instances.getInt('lastZikirType');
     });
   }

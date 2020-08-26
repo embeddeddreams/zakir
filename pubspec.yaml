@@ -1,7 +1,7 @@
 name: zakir
-description: A new Flutter project.
+description: Mobile Dhikr Application
 
-version: 1.0.0+2
+version: 1.0.1+4
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -21,7 +21,7 @@ dependencies:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/images/logo-2.png"
+  image_path: "assets/images/zakir-logo-big-green.png"
 
 dev_dependencies:
 

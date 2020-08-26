@@ -18,4 +18,6 @@ class AppIcons {
   static final evening = 'assets/icons/dusk.png';
   static final beforeSleep = 'assets/icons/bedtime.png';
   static final awakening = 'assets/icons/insomnia.png';
+  static final sadness = 'assets/icons/sadness.png';
+  static final trouble = 'assets/icons/trouble.png';
 }

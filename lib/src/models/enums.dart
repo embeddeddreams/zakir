@@ -1,6 +1,8 @@
 enum ZikirType {
   Morning,
   Evening,
-  BeforeSleep,
   Awakening,
+  Sadness,
+  Trouble,
+  BeforeSleep,
 }
