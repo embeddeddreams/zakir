@@ -105,7 +105,7 @@ class _ZikirPageState extends State<ZikirPage> {
                     child: Container(
                       height: MediaQuery.of(context).size.height,
                       width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.fromLTRB(40, 60, 40, 45),
+                      padding: EdgeInsets.fromLTRB(30, 60, 30, 45),
                       // color: AppColors.greyLight,
                       child: ListView(
                         controller: _scrollController,
@@ -121,7 +121,7 @@ class _ZikirPageState extends State<ZikirPage> {
                                     textDirection: TextDirection.rtl,
                                     textAlign: TextAlign.justify,
                                     style: TextStyle(
-                                      fontSize: 30,
+                                      fontSize: 27,
                                       color: AppColors.indigoDark,
                                       // fontWeight: FontWeight.w500,
                                       fontFamily: "Amiri",
@@ -162,48 +162,67 @@ class _ZikirPageState extends State<ZikirPage> {
                       padding: EdgeInsets.fromLTRB(20, 0, 20, 5),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                        // crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
-                          // data[_index].timeRange == null
-                          //     ? Container()
-                          //     : Container(
-                          //         margin: const EdgeInsets.only(right: 20),
-                          //         width: 32,
-                          //         height: 32,
-                          //         child: IconButton(
-                          //           padding: EdgeInsets.zero,
-                          //           onPressed: () {
-                          //             _pc.open();
-                          //           },
-                          //           icon: Icon(
-                          //             Icons.keyboard_arrow_up,
-                          //             color: Colors.black54,
-                          //             size: 32,
-                          //           ),
-                          //         ),
-                          //       ),
-                          Container(
-                            margin: const EdgeInsets.only(right: 20),
-                            width: 32,
-                            height: 32,
-                            child: IconButton(
-                              padding: EdgeInsets.zero,
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  child: SourceDialogBox(
-                                    narration: data[_index].narration,
-                                    authenticity: data[_index].authenticity,
-                                    reference: data[_index].reference,
-                                    height: _setHeight(data[_index]),
+                          Row(
+                            children: <Widget>[
+                              // data[_index].timeRange == null
+                              //     ? Container()
+                              //     : Container(
+                              //         margin: const EdgeInsets.only(right: 20),
+                              //         width: 32,
+                              //         height: 32,
+                              //         child: IconButton(
+                              //           padding: EdgeInsets.zero,
+                              //           onPressed: () {
+                              //             _pc.open();
+                              //           },
+                              //           icon: Icon(
+                              //             Icons.keyboard_arrow_up,
+                              //             color: Colors.black54,
+                              //             size: 32,
+                              //           ),
+                              //         ),
+                              //       ),
+
+                              Container(
+                                margin: const EdgeInsets.only(right: 10),
+                                width: 32,
+                                height: 32,
+                                child: IconButton(
+                                  padding: EdgeInsets.zero,
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      child: SourceDialogBox(
+                                        narration: data[_index].narration,
+                                        authenticity: data[_index].authenticity,
+                                        reference: data[_index].reference,
+                                        height: _setHeight(data[_index]),
+                                      ),
+                                    );
+                                  },
+                                  icon: Icon(
+                                    Icons.info_outline,
+                                    color: AppColors.green,
                                   ),
-                                );
-                              },
-                              icon: Icon(
-                                Icons.info_outline,
-                                color: AppColors.green,
+                                ),
                               ),
-                            ),
+                              Container(
+                                width: 250,
+                                child: Text(
+                                  data[_index].reference ?? "",
+                                  style: GoogleFonts.libreBaskerville(
+                                    textStyle: TextStyle(
+                                      color: AppColors.greyDark,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
                           ),
                           Container(
                             child: Row(
@@ -240,17 +259,17 @@ class _ZikirPageState extends State<ZikirPage> {
                     ),
                   ),
                   Positioned(
-                    top: 35,
+                    top: 40,
                     child: SliderTheme(
                       data: SliderThemeData(
-                          trackHeight: 6,
+                          trackHeight: 16,
                           activeTrackColor: AppColors.green,
                           inactiveTrackColor: AppColors.green.withAlpha(40),
                           thumbColor: Colors.transparent,
                           thumbShape:
                               RoundSliderThumbShape(enabledThumbRadius: 0)),
                       child: Container(
-                        height: 6,
+                        height: 16,
                         width: MediaQuery.of(context).size.width,
                         child: Slider(
                           min: 0,

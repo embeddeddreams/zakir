@@ -60,21 +60,22 @@ class _SourceDialogBoxState extends State<SourceDialogBox> {
                         ),
                       ),
                     ),
-              widget.authenticity == null || widget.authenticity.isEmpty
-                  ? SizedBox(height: 10)
-                  : Padding(
-                      padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
-                      child: Text(
-                        widget.authenticity ?? "",
-                        textAlign: TextAlign.justify,
-                        style: GoogleFonts.notoSans(
-                          textStyle: TextStyle(
-                            color: Colors.black.withAlpha(170),
-                            fontSize: 13,
-                          ),
-                        ),
-                      ),
-                    ),
+              SizedBox(height: 10),
+              // widget.authenticity == null || widget.authenticity.isEmpty
+              //     ? SizedBox(height: 10)
+              //     : Padding(
+              //         padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
+              //         child: Text(
+              //           widget.authenticity ?? "",
+              //           textAlign: TextAlign.justify,
+              //           style: GoogleFonts.notoSans(
+              //             textStyle: TextStyle(
+              //               color: Colors.black.withAlpha(170),
+              //               fontSize: 13,
+              //             ),
+              //           ),
+              //         ),
+              //       ),
               Text(
                 widget.reference ?? "",
                 style: GoogleFonts.libreBaskerville(
