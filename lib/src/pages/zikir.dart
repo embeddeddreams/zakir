@@ -29,11 +29,14 @@ class _ZikirPageState extends State<ZikirPage> {
   PanelController _pc = new PanelController();
   int _index = 0;
   int _counter = 0;
+  List<int> _charLengths = List();
+  int _totalCharLength;
+  int _elapsedCharLength = 0;
 
   @override
   void initState() {
-    _loadData();
     this._index = widget.lastIndex ?? 0;
+    _loadData();
     // if (Platform.isIOS) {
     //   if (_audioCache.fixedPlayer != null) {
     //     _audioCache.fixedPlayer.startHeadlessService();
@@ -47,14 +50,27 @@ class _ZikirPageState extends State<ZikirPage> {
     String incoming = await DefaultAssetBundle.of(context)
         .loadString("assets/data/data.json");
     setState(() {
-      data = (json.decode(incoming) as List)
+      var rawData = (json.decode(incoming) as List)
           .where((e) => e["types"].contains(widget.type))
-          .toList()
-          .map((e) {
+          .toList();
+      data = rawData.map((e) {
         var item = Zikir.fromJson(e);
         item.text = item.text ?? _formatSurah(item.textArray);
         return item;
       }).toList();
+      _charLengths = rawData
+          .map((x) => x["textArray"] == null
+              ? (x["text"].length as int) * (x["count"] as int)
+              : (x["textArray"]
+                      .map((x) => x.length as int)
+                      .toList()
+                      .fold(0, (p, c) => p + c) as int) *
+                  (x["count"] as int))
+          .toList();
+      _totalCharLength = _charLengths.fold(0, (p, c) => p + c);
+      if (_index > 0)
+        _elapsedCharLength =
+            _charLengths.sublist(0, _index).fold(0, (p, c) => p + c);
     });
   }
 
@@ -157,7 +173,7 @@ class _ZikirPageState extends State<ZikirPage> {
                       ),
                     ),
                     Positioned(
-                      bottom: 30,
+                      bottom: 25,
                       child: Container(
                         width: MediaQuery.of(context).size.width,
                         padding: EdgeInsets.fromLTRB(20, 0, 20, 5),
@@ -211,7 +227,7 @@ class _ZikirPageState extends State<ZikirPage> {
                                   ),
                                 ),
                                 Container(
-                                  width: 250,
+                                  width: 200,
                                   child: Text(
                                     data[_index].reference ?? "",
                                     style: GoogleFonts.libreBaskerville(
@@ -275,8 +291,8 @@ class _ZikirPageState extends State<ZikirPage> {
                           width: MediaQuery.of(context).size.width,
                           child: Slider(
                             min: 0,
-                            max: data.length.toDouble(),
-                            value: _index.toDouble(),
+                            max: _totalCharLength.toDouble(),
+                            value: _elapsedCharLength.toDouble(),
                             onChanged: (val) {},
                           ),
                         ),
@@ -358,6 +374,8 @@ class _ZikirPageState extends State<ZikirPage> {
   void _next() {
     if (_index < data.length - 1) {
       setState(() {
+        _elapsedCharLength += _charLengths[_index];
+        print({_elapsedCharLength,_charLengths[_index]});
         _index++;
         _counter = 0;
         _saveLast();
@@ -374,6 +392,7 @@ class _ZikirPageState extends State<ZikirPage> {
       if (_index > 0) {
         _index--;
         _counter = 0;
+        _elapsedCharLength -= _charLengths[_index];
       } else {
         Navigator.of(context).pop();
       }

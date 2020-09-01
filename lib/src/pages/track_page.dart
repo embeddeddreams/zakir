@@ -24,11 +24,21 @@ class _TrackPageState extends State<TrackPage> {
   List<Item> _data = [
     Item(
         header: 'Günlük Vird',
-        expandedWidget:Container(),
+        expandedWidget: Center(
+          child: Text(
+            "Günlük virdinize henüz bir zikir eklemediniz.",
+            style: TextStyle(color: Colors.black54),
+          ),
+        ),
         isExpanded: true),
     Item(
       header: 'Vird Takibi',
-      expandedWidget: Container(),
+      expandedWidget: Center(
+        child: Text(
+          "Günlük virdinize henüz bir zikir eklemediniz.",
+          style: TextStyle(color: Colors.black54),
+        ),
+      ),
     ),
   ];
 
@@ -51,8 +61,6 @@ class _TrackPageState extends State<TrackPage> {
               },
               body: ListTile(
                 title: item.expandedWidget,
-                subtitle: Text('To delete this panel, tap the trash can icon'),
-                trailing: Icon(Icons.delete),
                 // onTap: () {
                 //   setState(() {
                 //     _data.removeWhere((currentItem) => item == currentItem);

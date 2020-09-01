@@ -1,10 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zakir/constants.dart';
 import 'package:zakir/src/models/enums.dart';
 import 'package:zakir/src/models/enums.dart';
+import 'package:zakir/src/models/zikir_list_vm.dart';
 import 'package:zakir/src/pages/zikir.dart';
 import 'package:zakir/src/widgets/z_list_item.dart';
+import 'package:zakir/src/widgets/zikir_item.dart';
 
 class Zikir {
   // final List<int> type;
@@ -30,12 +34,33 @@ class _ListPageState extends State<ListPage> with TickerProviderStateMixin {
   TabController _tabController;
   int _lastIndex = 0;
   int _lastType;
+  List _allRawData = List<ZikirListVM>();
 
   @override
   void initState() {
     _tabController = new TabController(vsync: this, length: 2);
     _getLastPosition();
+    _loadData();
     super.initState();
+  }
+
+  _loadData() async {
+    String incoming = await DefaultAssetBundle.of(context)
+        .loadString("assets/data/data.json");
+    setState(() {
+      _allRawData = (json.decode(incoming) as List).map((e) {
+        var item = ZikirListVM.fromJson(e);
+        item.text = item.text ?? _formatSurah(item.textArray);
+        return item;
+      }).toList();
+    });
+  }
+
+  String _formatSurah(List<String> array) {
+    if (array.length > 2)
+      return array.join(' ۞ \n\n');
+    else
+      return array.join('۞');
   }
 
   @override
@@ -51,7 +76,7 @@ class _ListPageState extends State<ListPage> with TickerProviderStateMixin {
               tabs: [
                 Tab(
                   child: Text(
-                    "Zikirler",
+                    "Tasnif Edilmiş",
                     style: TextStyle(
                       color: AppColors.green,
                       fontSize: 16,
@@ -61,7 +86,7 @@ class _ListPageState extends State<ListPage> with TickerProviderStateMixin {
                 ),
                 Tab(
                   child: Text(
-                    "Dualar",
+                    "Hepsi",
                     style: TextStyle(
                       color: AppColors.green,
                       fontSize: 16,
@@ -105,6 +130,22 @@ class _ListPageState extends State<ListPage> with TickerProviderStateMixin {
                           subtitle: "İkindi kerahet vakti girmesinden itibaren",
                           onTap: () {
                             _goToZikir(ZikirType.Evening.index);
+                          },
+                        ),
+                        ZListItem(
+                          "Üzüntü ve Keder Anında Yapılan Dualar",
+                          ZikirType.Sadness.index,
+                          AppIcons.sadness,
+                          onTap: () {
+                            _goToZikir(ZikirType.Sadness.index);
+                          },
+                        ),
+                        ZListItem(
+                          "Sıkıntı Anında Yapılan Dualar",
+                          ZikirType.Trouble.index,
+                          AppIcons.trouble,
+                          onTap: () {
+                            _goToZikir(ZikirType.Trouble.index);
                           },
                         ),
                         // FlatButton(
@@ -158,77 +199,16 @@ class _ListPageState extends State<ListPage> with TickerProviderStateMixin {
                         : Container(),
                   ],
                 ),
-                Stack(
-                  children: <Widget>[
-                    ListView(
-                      children: <Widget>[
-                        ZListItem(
-                          "Üzüntü ve Keder Anında Yapılan Dualar",
-                          ZikirType.Sadness.index,
-                          AppIcons.sadness,
-                          onTap: () {
-                            _goToZikir(ZikirType.Sadness.index);
-                          },
-                        ),
-                        // _listItem(
-                        //   "Üzüntü ve Keder Anında Yapılan Dualar",
-                        //   ZikirType.Sadness.index,
-                        //   AppIcons.sadness,
-                        // ),
-                        ZListItem(
-                          "Sıkıntı Anında Yapılan Dualar",
-                          ZikirType.Trouble.index,
-                          AppIcons.trouble,
-                          onTap: () {
-                            _goToZikir(ZikirType.Trouble.index);
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
+                ListView.builder(
+                  itemCount: _allRawData.length,
+                  itemBuilder: (BuildContext ctxt, int index) =>
+                      ZikirItem(_allRawData[index]),
                 ),
               ],
             ),
           ),
         ),
       ],
-    );
-  }
-
-  _listItem(String title, int typeIndex, String iconPath, {String subtitle}) {
-    return ListTile(
-      // contentPadding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-      leading: Image.asset(
-        iconPath,
-        width: 32,
-        height: 32,
-      ),
-      title: Text(
-        title,
-        style: TextStyle(fontWeight: FontWeight.w500),
-      ),
-      subtitle: subtitle == null
-          ? null
-          : Text(
-              subtitle,
-              style: TextStyle(fontSize: 12),
-            ),
-      trailing: Icon(
-        Icons.more_vert,
-        color: AppColors.blackLight,
-      ),
-      onTap: () {
-        _saveLastType(typeIndex);
-        Navigator.of(context)
-            .push(
-          MaterialPageRoute(
-            builder: (BuildContext context) => ZikirPage(type: typeIndex),
-          ),
-        )
-            .then((_) {
-          _getLastPosition();
-        });
-      },
     );
   }
 
@@ -257,4 +237,30 @@ class _ListPageState extends State<ListPage> with TickerProviderStateMixin {
       this._lastType = instances.getInt('lastZikirType');
     });
   }
+
+  //  Stack(
+  //                 children: <Widget>[
+  //                   ListView(
+  //                     children: <Widget>[
+  //                       ZikirItem()
+  // ZListItem(
+  //   "Üzüntü ve Keder Anında Yapılan Dualar",
+  //   ZikirType.Sadness.index,
+  //   AppIcons.sadness,
+  //   onTap: () {
+  //     _goToZikir(ZikirType.Sadness.index);
+  //   },
+  // ),
+  // ZListItem(
+  //   "Sıkıntı Anında Yapılan Dualar",
+  //   ZikirType.Trouble.index,
+  //   AppIcons.trouble,
+  //   onTap: () {
+  //     _goToZikir(ZikirType.Trouble.index);
+  //   },
+  // ),
+  //       ],
+  //     ),
+  //   ],
+  // ),
 }

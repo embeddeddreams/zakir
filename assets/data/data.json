@@ -4,11 +4,13 @@
             "اَللّٰهُ لَٓا إِلٰـهَ إِلَّا هُوَ الْحَىُّ الْقَيُّومُ‌ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِى السَّـمَاوَاتِ وَمَا فِى الْأَرْضِ‌ ۗ مَنْ ذَا الَّذِى يَشْفَعُ عِنْدَهُ  إِلَّا بِإِذْنِهِ ۚ  يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمۡ‌ۖ وَلَا يُحِيطُونَ بِشَىْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَٓاءَ‌ ۚ وَسِعَ كُرْسِيُّهُ السَّمَـاوَاتِ وَالْأَرْضَ‌ۖ وَلَا يَـــُٔودُهُ حِفْظُهُمَا‌ۚ وَهُوَ الْعَلِىُّ الْعَظِيمُ",
             ""
         ],
+        "description": "Ayet el-Kursî",
         "translation": "Allah, O'ndan başka ilâh yoktur; O, hayydir, kayyûmdur. Kendisine ne uyku gelir ne de uyuklama. Göklerde ve yerdekilerin hepsi O'nundur. İzni olmadan O'nun katında kim şefaat edebilir? O, kullarının yaptıklarını ve yapacaklarını bilir. (O'na hiçbir şey gizli kalmaz.) O'nun bildirdiklerinin dışında insanlar O'nun ilminden hiçbir şeyi tam olarak bilemezler. O'nun kürsüsü gökleri ve yeri içine alır, onları koruyup gözetmek kendisine zor gelmez. O, yücedir, büyüktür. (Bakara 255)",
         "narration": "Kim bunu sabahladığı zaman okursa akşam oluncaya kadar cinlerden korunur. Kim de akşamladığı zaman bunu okursa sabah oluncaya kadar cinlerden korunur.",
         "authenticity": "el-Elbânî, hadisin sahih olduğunu İmam Nesâi ve Taberâni’ye isnâd ederek söyler ve Taberâni’nin senedinin ceyyid olduğunu ekler. Bkz. Sahihu’t Terğib ve’t Terhib (1/273)",
         "reference": "Hakim (1/562)",
         "count": 1,
+        "tag": "Sabah-Akşam Zikirleri",
         "types": [
             0,
             1
@@ -24,11 +26,13 @@
             "بِسْمِ اللّٰهِ الرَّحْمَـٰنِ الرَّحِيمِ  \n قُلْ أَعُوذُ بِـرَبِّ الْفَلَقِ ۞ مِنْ شَرِّ مَا خَلَقَ ۞ وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ ۞ وَمِنْ شَرِّ النَّفّٰـثٰـتِ فِى الْعُقَدِ ۞ وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ ",
             "بِسْمِ اللّٰهِ الرَّحْمَـٰنِ الرَّحِيمِ  \n قُلْ أَعُوذُ بِـرَبِّ النَّاسِ ۞ مَلِكِ النَّاسِ ۞ إِلٰـهِ النَّاسِ ۞ مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۞ اَلَّذِى يُوَسْوِسُ فِى صُدُورِ النَّاسِ ۞ مِنَ الْجِنَّةِ وَالنَّاسِ"
         ],
+        "description": "İhlas, Felâk, Nâs Sureleri",
         "translation": "Rahmân ve Rahîm Allah'ın adıyla.\nDe ki: O Allah birdir. Allah Samed’dir, (her şeyden müstağni ve her şey O'na muhtaçtır). O doğurmamış ve doğmamıştır. Hiçbir şey O'na denk değildir. \n\nRahmân ve Rahîm Allah'ın adıyla.\nDe ki: 'Yarattıklarının şerrinden, bastırdığı zaman karanlığın şerrinden, düğümlere üfleyen büyücülerin şerrinden, hased ettiği zaman hasetçilerin şerrinden, tan yerini ağartan Rabbe sığınırım.' \n\nRahmân ve Rahîm Allah'ın adıyla.\nDe ki: 'İnsanlar ve cinlerden olup insanların göğüslerine vesvese veren o sinsi vesvesecinin şerrinden, insanların Rabbi, insanların hükümdârı ve insanların ilahı olan Allah'a sığınırım.'",
         "narration": "Kim bunu sabahladığı ve akşamladığı zaman üç kere okursa her şeye karşı onu korur.",
         "authenticity": "",
         "reference": "Ebu Dâvud (4/322), Tirmizi (5/567). Bkz. Sahih-i Tirmizi (3/182)",
         "count": 3,
+        "tag": "Sabah-Akşam Zikirleri",
         "types": [
             0,
             1
@@ -45,6 +49,7 @@
         "authenticity": "",
         "reference": "Tirmizi (5/466)",
         "count": 1,
+        "tag": "Sabah-Akşam Zikirleri",
         "types": [
             0
         ],
@@ -60,6 +65,7 @@
         "authenticity": "Bkz. Sahih-i Tirmizi (3/142).",
         "reference": "Tirmizi (5/466)",
         "count": 1,
+        "tag": "Sabah-Akşam Zikirleri",
         "types": [
             1
         ]
@@ -71,6 +77,7 @@
         "authenticity": "",
         "reference": "Ahmed (3/406-407); İbn es-Sünnî, Amelu’l-Yevmi ve’l-Leyle (h.34). Bkz. Sahihu’l-Câmî (4/209).",
         "count": 1,
+        "tag": "Sabah-Akşam Zikirleri",
         "types": [
             0
         ],
@@ -86,6 +93,7 @@
         "authenticity": "",
         "reference": "Ahmed (3/406-407); İbn es-Sünnî, Amelu’l-Yevmi ve’l-Leyle (h.34). Bkz. Sahihu’l-Câmî (4/209).",
         "count": 1,
+        "tag": "Sabah-Akşam Zikirleri",
         "types": [
             1
         ]
@@ -97,6 +105,7 @@
         "authenticity": "Hakim’in sahih olduğunu söylemesine, İmam Zehebi muvafakat eder. (1/545). Bkz. Sahihu’t-Terğib ve’t-Terhib, (1/273).",
         "reference": "",
         "count": 1,
+        "tag": "Sabah-Akşam Zikirleri",
         "types": [
             0,
             1
@@ -108,11 +117,13 @@
     },
     {
         "text": "اَللّٰهُمَّ أَنْتَ رَبِّـي لَا إِلٰـهَ إِلَّا أَنْتَ، خَلَقْتَنِـي وَ أَنَا  عَبْـدُكَ، وَ أَنَا عَلٰـى عَهْـدِكَ وَوَعْـدِكَ مَا اسْتَـطَعْـتُ، أَعُـوذُبِكَ مِنْ شَـرِّ مَا صَنَـعْتُ، أَبُـوءُ لَـكَ بِنِعْـمَتِـكَ عَلَـيَّ، وَأَبُـوءُ بِذَنْـبِي فَاغْفـِرْ لِي فَإِنَّـهُ لَا يَغْـفِرُ الذُّنُـوبَ إِلَّا أَنْتَ",
+        "description": "Seyyidu'l İstiğfar Duası",
         "translation": "Allahım! Sen benim Rabbimsin. Senden başka hiçbir ilah yoktur. Beni sen yarattın ve ben senin kulunum. Gücüm yettiğince sana verdiğim söz üzereyim. Yaptıklarımın şerrinden sana sığınırım. Üzerimdeki nimetini ve günahlarımı kabul ediyorum. Beni bağışla. Şüphesiz günahları ancak sen bağışlarsın.",
         "narration": "Kim bunu akşamladığı zaman içtenlikle inanarak söyler de o gece ölürse, cennete girer. Sabahladığı vakit yaparsa da böyledir.",
         "authenticity": "",
         "reference": "Buhâri, (7/150)",
         "count": 1,
+        "tag": "Sabah-Akşam Zikirleri",
         "types": [
             0,
             1
@@ -129,6 +140,7 @@
         "authenticity": "İsnadı hasendir. Bkz. Tuhfetu’l-Ahyar (s.24).",
         "reference": "Ebu Dâvud (4/318), Nesâi, Amelu’l-Yevmi ve’l-Leyle (h.7), İbn-i es-Sünnî (h.41), İbn-i Hibbân, Mevârid (h.2361)",
         "count": 1,
+        "tag": "Sabah-Akşam Zikirleri",
         "types": [
             0
         ],
@@ -144,6 +156,7 @@
         "authenticity": "İsnadı hasendir. Bkz. Tuhfetu’l-Ahyar (s.24).",
         "reference": "Ebu Dâvud (4/318), Nesâi, Amelu’l-Yevmi ve’l-Leyle (h.7), İbn-i es-Sünnî (h.41), İbn-i Hibbân, Mevârid (h.2361)",
         "count": 1,
+        "tag": "Sabah-Akşam Zikirleri",
         "types": [
             1
         ]
@@ -155,6 +168,7 @@
         "authenticity": "",
         "reference": "Tirmizi, Ebu Dâvud; Bkz. Sahih-i Tirmizi (3/142)",
         "count": 1,
+        "tag": "Sabah-Akşam Zikirleri",
         "types": [
             0,
             1
@@ -171,6 +185,7 @@
         "authenticity": "Şuayb el-Arnavût ve Abdulkâdir el-Arnavût, isnadının hasen olduğunu söylemişlerdir. Bkz. Zâdü’l-Meâd (2/375)",
         "reference": "İbn-i es-Sünnî, Amelu’l-Yevmi ve’l-Leyle (h.54), İbn-i Mâce (h.925).",
         "count": 1,
+        "tag": "Sabah-Akşam Zikirleri",
         "types": [
             0
         ],
@@ -186,6 +201,7 @@
         "authenticity": "",
         "reference": "Müslim (4/2088).",
         "count": 1,
+        "tag": "Sabah-Akşam Zikirleri",
         "types": [
             0
         ],
@@ -201,6 +217,7 @@
         "authenticity": "",
         "reference": "Müslim (4/2088).",
         "count": 1,
+        "tag": "Sabah-Akşam Zikirleri",
         "types": [
             1
         ]
@@ -212,6 +229,7 @@
         "authenticity": "Şuayb el-Arnavût ve Abdülkâdir el-Arnavût, isnadının hasen olduğunu söylemişlerdir. Bkz. Zâdu’l-Meâd (2/273)",
         "reference": "Ebu Dâvud (4/322)",
         "count": 1,
+        "tag": "Sabah-Akşam Zikirleri",
         "types": [
             0
         ],
@@ -227,6 +245,7 @@
         "authenticity": "Şuayb el-Arnavût ve Abdülkâdir el-Arnavût, isnadının hasen olduğunu söylemişlerdir. Bkz. Zâdu’l-Meâd (2/273)",
         "reference": "Ebu Dâvud (4/322)",
         "count": 1,
+        "tag": "Sabah-Akşam Zikirleri",
         "types": [
             1
         ]
@@ -238,6 +257,7 @@
         "authenticity": "",
         "reference": "Ebu Dâvud, İbn-i Mâce; Bkz. Sahih-i İbn-i Mâce (2/332)",
         "count": 1,
+        "tag": "Sabah-Akşam Zikirleri",
         "types": [
             0,
             1
@@ -254,6 +274,7 @@
         "authenticity": "İsnadı hasendir. Bkz: Tuhfetu’l-Ahyar (s.39), Sahih-i İbn-i Mâce (2/332).",
         "reference": "Ebu Dâvud (4/323), Tirmizi (5/465), İbn-i Mâce ve Ahmed tahric etmiştir.",
         "count": 3,
+        "tag": "Sabah-Akşam Zikirleri",
         "types": [
             0,
             1
@@ -270,6 +291,7 @@
         "authenticity": "",
         "reference": "Müslim (4/2090)",
         "count": 3,
+        "tag": "Sabah-Akşam Zikirleri",
         "types": [
             0
         ],
@@ -285,6 +307,7 @@
         "authenticity": "",
         "reference": "Ahmed (2/290), Nesâi, Amelu’l-Yevmi ve’l-Leyle (h.590), İbn-i es-Sünnî (h.68). Bkz. Sahih-i Tirmizi (3/187), Sahih-i İbn-i Mâce (2/266), Tuhfetu’l-Ahyar (s.45).",
         "count": 3,
+        "tag": "Sabah-Akşam Zikirleri",
         "types": [
             1
         ]
@@ -296,6 +319,7 @@
         "authenticity": "Hadis hasendir. Tuhfetu’l-Ahyar (s.39).",
         "reference": "Ahmed (4/337), Nesâi, Amelu’l-Yevmi ve’l Leyle (h.4), İbn-i es-Sünnî (h.68), Ebu Dâvud (4/418), Tirmizi (5/465)",
         "count": 3,
+        "tag": "Sabah-Akşam Zikirleri",
         "types": [
             0,
             1
@@ -312,6 +336,7 @@
         "authenticity": " Allâme Abdulaziz b. Baz, isnadın hasen mertebesinde olduğunu söyler; Bkz. Tuhfetu’l-Ahyar (s.26).",
         "reference": "Ebu Dâvud (4/324), Ahmed (5/42), Nesâi, Amelu’l-Yevmi ve’l-Leyle (h.22), İbn-i es-Sünnî (h.69), Buhâri Edebu’l-Müfred. ",
         "count": 3,
+        "tag": "Sabah-Akşam Zikirleri",
         "types": [
             0,
             1
@@ -328,6 +353,7 @@
         "authenticity": "Buhâri, Edeb’l- Müfred (h.1201); Nesâi, Amelu’l-Yevmi ve’l-Leyle (h.9); İbn-i es-Sünnî, (h.70). İsnadı hasendir. Bkz. Tuhfetu’l-Ahyâr (s.23).",
         "reference": "Ebu Dâvud (4/317)",
         "count": 4,
+        "tag": "Sabah-Akşam Zikirleri",
         "types": [
             0
         ],
@@ -343,6 +369,7 @@
         "authenticity": "Buhâri, Edeb’l- Müfred (h.1201); Nesâi, Amelu’l-Yevmi ve’l-Leyle (h.9); İbn-i es-Sünnî, (h.70). İsnadı hasendir. Bkz. Tuhfetu’l-Ahyâr (s.23).",
         "reference": "Ebu Dâvud (4/317)",
         "count": 4,
+        "tag": "Sabah-Akşam Zikirleri",
         "types": [
             1
         ]
@@ -354,6 +381,7 @@
         "authenticity": "Şuayb el-Arnavut ve Abdülkadir el-Arnavut isnadının sahih olduğunu söylemişlerdir. Bkz. Zâdu’l-Meâd (2/376)",
         "reference": "İbn-i es-Sünnî (h.71) merfû, Ebu Dâvud (4/321) mevkufen tahric etmiştir.",
         "count": 7,
+        "tag": "Sabah-Akşam Zikirleri",
         "types": [
             0,
             1
@@ -365,11 +393,13 @@
     },
     {
         "text": "اَللّٰهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبِيِّنَا مُحَمَّدٍ",
+        "description": "Salavât",
         "translation": "Allahım! Peygamberimiz Muhammed’e salât ve selâm eyle.",
         "narration": "Kim sabahladığı zaman on kere ve akşamladığı zaman on kere bana salât getirirse, kıyâmet günü şefaatim ona ulaşır.",
         "authenticity": "Taberâni, biri ceyyid olmak üzere iki senedle hadisi tahric etmiştir. ",
         "reference": "Bkz. Mecmeu’z-Zevâid (10/120), Sahihu’t-Terğib ve’t-Terhib (1/273).",
         "count": 10,
+        "tag": "Sabah-Akşam Zikirleri",
         "types": [
             0,
             1
@@ -382,6 +412,7 @@
         "authenticity": "",
         "reference": "Ebu Dâvud (4/319), İbn-i Mâce, Ahmed (4/60). Bkz. Sahihu’t-Terğib ve’t-Terhib (1/270), Sahih-i Ebî Dâvud (3/957), Sahih-i İbn-i Mâce (2/331), Zâdü’l-Meâd (2/377)",
         "count": 10,
+        "tag": "Sabah-Akşam Zikirleri",
         "types": [
             0,
             1
@@ -398,6 +429,7 @@
         "authenticity": "",
         "reference": " Müslim (4/2071).",
         "count": 100,
+        "tag": "Sabah-Akşam Zikirleri",
         "types": [
             0,
             1
@@ -410,6 +442,7 @@
         "authenticity": "",
         "reference": "Buhâri (4/95), Müslim (4/2071).",
         "count": 100,
+        "tag": "Sabah-Akşam Zikirleri",
         "types": [
             0
         ],
@@ -420,11 +453,13 @@
     },
     {
         "text": "أَسْتَغْفِرُ اللّٰهَ وَأَتُوبُ إِلَيْهِ",
+        "description": "İstiğfar",
         "translation": "Allah’tan mağfiret diler ve O’na tevbe ederim.",
         "narration": "",
         "authenticity": "",
         "reference": "Bkz. Buharî, Fethu’l-Bâri (11/101), Müslim (4/2075)",
         "count": 100,
+        "tag": "İstiğfar Duası",
         "types": []
     },
     {

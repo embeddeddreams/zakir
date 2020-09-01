@@ -17,57 +17,68 @@ class _AccountPageState extends State<AccountPage> {
       child: ListView(
         padding: EdgeInsets.symmetric(vertical: 20),
         children: <Widget>[
-          Container(
-            padding: EdgeInsets.all(16),
-            color: Colors.white,
-            // height: 150,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Container(
-                      width: 80,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          image: ExactAssetImage('assets/images/gravite.jpg'),
-                          fit: BoxFit.fitWidth,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "Mustafa Yıldız",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            "onnumaramail@gmail.com",
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black45,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                _getEditIcon(),
-              ],
+          // Container(
+          //   padding: EdgeInsets.all(16),
+          //   color: Colors.white,
+          //   // height: 150,
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: <Widget>[
+          //       Row(
+          //         children: <Widget>[
+          //           Container(
+          //             width: 80,
+          //             height: 80,
+          //             decoration: BoxDecoration(
+          //               shape: BoxShape.circle,
+          //               image: DecorationImage(
+          //                 image: ExactAssetImage('assets/images/gravite.jpg'),
+          //                 fit: BoxFit.fitWidth,
+          //               ),
+          //             ),
+          //           ),
+          //           Padding(
+          //             padding: const EdgeInsets.only(left: 16),
+          //             child: Column(
+          //               mainAxisAlignment: MainAxisAlignment.center,
+          //               crossAxisAlignment: CrossAxisAlignment.start,
+          //               children: <Widget>[
+          //                 Text(
+          //                   "Mustafa Yıldız",
+          //                   style: TextStyle(
+          //                     fontSize: 16,
+          //                     fontWeight: FontWeight.bold,
+          //                   ),
+          //                 ),
+          //                 Text(
+          //                   "onnumaramail@gmail.com",
+          //                   style: TextStyle(
+          //                     fontSize: 16,
+          //                     color: Colors.black45,
+          //                   ),
+          //                 ),
+          //               ],
+          //             ),
+          //           ),
+          //         ],
+          //       ),
+          //       _getEditIcon(),
+          //     ],
+          //   ),
+          // ),
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: Text(
+              "Sevaba ortak olmak ister misin?",
+              style: TextStyle(
+                color: AppColors.green,
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
           Container(
-            margin: EdgeInsets.only(top: 20),
+            margin: EdgeInsets.only(top: 5),
             color: Colors.white,
             child: Column(
               children: <Widget>[
@@ -78,7 +89,7 @@ class _AccountPageState extends State<AccountPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
-                            "Abonelik Planım",
+                            "Paylaş & Davet Et",
                             style: TextStyle(fontSize: 16),
                           ),
                           Icon(Icons.chevron_right),
@@ -97,7 +108,7 @@ class _AccountPageState extends State<AccountPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
-                            "Geçmiş Siparişlerim",
+                            "Google Play'de Değerlendir",
                             style: TextStyle(fontSize: 16),
                           ),
                           Icon(Icons.chevron_right),
@@ -116,27 +127,12 @@ class _AccountPageState extends State<AccountPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
-                            "Favori Mekanlar",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          Icon(Icons.chevron_right),
-                        ]),
-                    onPressed: () {},
-                  ),
-                ),
-                Divider(
-                  height: 0,
-                  thickness: 1,
-                ),
-                Container(
-                  height: 60,
-                  child: FlatButton(
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            "Bildirim Ayarları",
-                            style: TextStyle(fontSize: 16),
+                            "Bağış Yap",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: AppColors.green,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           Icon(Icons.chevron_right),
                         ]),
@@ -144,6 +140,26 @@ class _AccountPageState extends State<AccountPage> {
                   ),
                 ),
               ],
+            ),
+          ),
+          Container(
+            height: 180,
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 20),
+            color: Colors.white,
+            height: 60,
+            child: FlatButton(
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Bildirim Ayarları",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    Icon(Icons.chevron_right),
+                  ]),
+              onPressed: () {},
             ),
           ),
           Container(
