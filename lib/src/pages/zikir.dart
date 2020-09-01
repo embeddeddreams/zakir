@@ -77,212 +77,215 @@ class _ZikirPageState extends State<ZikirPage> {
     ));
     return Scaffold(
       key: _scaffoldKey,
-      body: SlidingUpPanel(
-        controller: _pc,
-        maxHeight: 100,
-        minHeight: 0,
-        defaultPanelState: PanelState.CLOSED,
-        panel: PlayerTrigger(_pc, _calculateStartPoint()),
-        body: data.length > 0
-            ? Stack(
-                children: <Widget>[
-                  InkResponse(
-                    // onHorizontalDragEnd: (details) {
-                    //   if (details.velocity.pixelsPerSecond.dx < 0) _next();
-                    //   if (details.velocity.pixelsPerSecond.dx > 0) _previous();
-                    // },
-                    onTap: _increment,
-                    onLongPress: _decrement,
-                    // borderRadius:BorderRadius.all(Radius.circular(50)),
-                    // radius: 500,
-                    splashFactory:
-                        InkRipple.splashFactory, //  CustomSplashFactory(),
-                    splashColor: _counter < data[_index].count
-                        ? AppColors.greenLight.withOpacity(0.3)
-                        : Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    enableFeedback: false,
-                    child: Container(
-                      height: MediaQuery.of(context).size.height,
-                      width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.fromLTRB(30, 60, 30, 45),
-                      // color: AppColors.greyLight,
-                      child: ListView(
-                        controller: _scrollController,
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.only(bottom: 20),
-                            child: Row(
-                              children: <Widget>[
-                                Flexible(
-                                  fit: FlexFit.loose,
-                                  child: Text(
-                                    data[_index].text,
-                                    textDirection: TextDirection.rtl,
-                                    textAlign: TextAlign.justify,
-                                    style: TextStyle(
-                                      fontSize: 27,
-                                      color: AppColors.indigoDark,
-                                      // fontWeight: FontWeight.w500,
-                                      fontFamily: "Amiri",
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            child: Row(
-                              children: <Widget>[
-                                Flexible(
-                                  fit: FlexFit.loose,
-                                  child: Text(
-                                    data[_index].translation,
-                                    textAlign: TextAlign.justify,
-                                    style: GoogleFonts.libreBaskerville(
-                                      textStyle: TextStyle(
-                                        color: Colors.black87,
-                                        fontSize: 16,
-                                        height: 1.3,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.fromLTRB(20, 0, 20, 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        // crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              // data[_index].timeRange == null
-                              //     ? Container()
-                              //     : Container(
-                              //         margin: const EdgeInsets.only(right: 20),
-                              //         width: 32,
-                              //         height: 32,
-                              //         child: IconButton(
-                              //           padding: EdgeInsets.zero,
-                              //           onPressed: () {
-                              //             _pc.open();
-                              //           },
-                              //           icon: Icon(
-                              //             Icons.keyboard_arrow_up,
-                              //             color: Colors.black54,
-                              //             size: 32,
-                              //           ),
-                              //         ),
-                              //       ),
-
-                              Container(
-                                margin: const EdgeInsets.only(right: 10),
-                                width: 32,
-                                height: 32,
-                                child: IconButton(
-                                  padding: EdgeInsets.zero,
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      child: SourceDialogBox(
-                                        narration: data[_index].narration,
-                                        authenticity: data[_index].authenticity,
-                                        reference: data[_index].reference,
-                                        height: _setHeight(data[_index]),
-                                      ),
-                                    );
-                                  },
-                                  icon: Icon(
-                                    Icons.info_outline,
-                                    color: AppColors.green,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                width: 250,
-                                child: Text(
-                                  data[_index].reference ?? "",
-                                  style: GoogleFonts.libreBaskerville(
-                                    textStyle: TextStyle(
-                                      color: AppColors.greyDark,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Container(
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: <Widget>[
-                                Text(
-                                  "$_counter",
-                                  style: TextStyle(
-                                    color: _counter > 0
-                                        ? AppColors.green
-                                        : Colors.black26,
-                                    fontSize: _counter > 0 ? 32 : 24,
-                                    fontWeight: _counter > 0
-                                        ? FontWeight.bold
-                                        : FontWeight.normal,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 4),
-                                  child: Text(
-                                    " / ${data[_index].count}",
-                                    style: TextStyle(
-                                      color: Colors.black26,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 40,
-                    child: SliderTheme(
-                      data: SliderThemeData(
-                          trackHeight: 16,
-                          activeTrackColor: AppColors.green,
-                          inactiveTrackColor: AppColors.green.withAlpha(40),
-                          thumbColor: Colors.transparent,
-                          thumbShape:
-                              RoundSliderThumbShape(enabledThumbRadius: 0)),
+      body: SafeArea(
+        child: SlidingUpPanel(
+          controller: _pc,
+          maxHeight: 100,
+          minHeight: 0,
+          defaultPanelState: PanelState.CLOSED,
+          panel: PlayerTrigger(_pc, _calculateStartPoint()),
+          body: data.length > 0
+              ? Stack(
+                  children: <Widget>[
+                    InkResponse(
+                      // onHorizontalDragEnd: (details) {
+                      //   if (details.velocity.pixelsPerSecond.dx < 0) _next();
+                      //   if (details.velocity.pixelsPerSecond.dx > 0) _previous();
+                      // },
+                      onTap: _increment,
+                      onLongPress: _decrement,
+                      // borderRadius:BorderRadius.all(Radius.circular(50)),
+                      // radius: 500,
+                      splashFactory:
+                          InkRipple.splashFactory, //  CustomSplashFactory(),
+                      splashColor: _counter < data[_index].count
+                          ? AppColors.greenLight.withOpacity(0.3)
+                          : Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      enableFeedback: false,
                       child: Container(
-                        height: 16,
+                        height: MediaQuery.of(context).size.height,
                         width: MediaQuery.of(context).size.width,
-                        child: Slider(
-                          min: 0,
-                          max: data.length.toDouble(),
-                          value: _index.toDouble(),
-                          onChanged: (val) {},
+                        padding: EdgeInsets.fromLTRB(30, 40, 30, 75),
+                        // color: AppColors.greyLight,
+                        child: ListView(
+                          controller: _scrollController,
+                          children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.only(bottom: 20),
+                              child: Row(
+                                children: <Widget>[
+                                  Flexible(
+                                    fit: FlexFit.loose,
+                                    child: Text(
+                                      data[_index].text,
+                                      textDirection: TextDirection.rtl,
+                                      textAlign: TextAlign.justify,
+                                      style: TextStyle(
+                                        fontSize: 27,
+                                        color: AppColors.indigoDark,
+                                        // fontWeight: FontWeight.w500,
+                                        fontFamily: "Amiri",
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              child: Row(
+                                children: <Widget>[
+                                  Flexible(
+                                    fit: FlexFit.loose,
+                                    child: Text(
+                                      data[_index].translation,
+                                      textAlign: TextAlign.justify,
+                                      style: GoogleFonts.libreBaskerville(
+                                        textStyle: TextStyle(
+                                          color: Colors.black87,
+                                          fontSize: 16,
+                                          height: 1.3,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                  ),
-                ],
-              )
-            : Center(child: CircularProgressIndicator()),
+                    Positioned(
+                      bottom: 30,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        padding: EdgeInsets.fromLTRB(20, 0, 20, 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          // crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                // data[_index].timeRange == null
+                                //     ? Container()
+                                //     : Container(
+                                //         margin: const EdgeInsets.only(right: 20),
+                                //         width: 32,
+                                //         height: 32,
+                                //         child: IconButton(
+                                //           padding: EdgeInsets.zero,
+                                //           onPressed: () {
+                                //             _pc.open();
+                                //           },
+                                //           icon: Icon(
+                                //             Icons.keyboard_arrow_up,
+                                //             color: Colors.black54,
+                                //             size: 32,
+                                //           ),
+                                //         ),
+                                //       ),
+
+                                Container(
+                                  margin: const EdgeInsets.only(right: 10),
+                                  width: 32,
+                                  height: 32,
+                                  child: IconButton(
+                                    padding: EdgeInsets.zero,
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        child: SourceDialogBox(
+                                          narration: data[_index].narration,
+                                          authenticity:
+                                              data[_index].authenticity,
+                                          reference: data[_index].reference,
+                                          height: _setHeight(data[_index]),
+                                        ),
+                                      );
+                                    },
+                                    icon: Icon(
+                                      Icons.info_outline,
+                                      color: AppColors.green,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  width: 250,
+                                  child: Text(
+                                    data[_index].reference ?? "",
+                                    style: GoogleFonts.libreBaskerville(
+                                      textStyle: TextStyle(
+                                        color: AppColors.greyDark,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: <Widget>[
+                                  Text(
+                                    "$_counter",
+                                    style: TextStyle(
+                                      color: _counter > 0
+                                          ? AppColors.green
+                                          : Colors.black26,
+                                      fontSize: _counter > 0 ? 32 : 24,
+                                      fontWeight: _counter > 0
+                                          ? FontWeight.bold
+                                          : FontWeight.normal,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 4),
+                                    child: Text(
+                                      " / ${data[_index].count}",
+                                      style: TextStyle(
+                                        color: Colors.black26,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 10,
+                      child: SliderTheme(
+                        data: SliderThemeData(
+                            trackHeight: 12,
+                            activeTrackColor: AppColors.green,
+                            inactiveTrackColor: AppColors.green.withAlpha(40),
+                            thumbColor: Colors.transparent,
+                            thumbShape:
+                                RoundSliderThumbShape(enabledThumbRadius: 0)),
+                        child: Container(
+                          height: 12,
+                          width: MediaQuery.of(context).size.width,
+                          child: Slider(
+                            min: 0,
+                            max: data.length.toDouble(),
+                            value: _index.toDouble(),
+                            onChanged: (val) {},
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              : Center(child: CircularProgressIndicator()),
+        ),
       ),
     );
   }

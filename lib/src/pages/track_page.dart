@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:zakir/constants.dart';
 
+import 'list_page.dart';
+
 class Item {
   Item({
-    this.expandedValue,
-    this.headerValue,
+    this.expandedWidget,
+    this.header,
     this.isExpanded = false,
   });
 
-  String expandedValue;
-  String headerValue;
+  Widget expandedWidget;
+  String header;
   bool isExpanded;
 }
 
@@ -21,12 +23,12 @@ class TrackPage extends StatefulWidget {
 class _TrackPageState extends State<TrackPage> {
   List<Item> _data = [
     Item(
-        headerValue: 'Panel 1',
-        expandedValue: 'This is item number 1',
+        header: 'Günlük Vird',
+        expandedWidget:Container(),
         isExpanded: true),
     Item(
-      headerValue: 'Panel 2',
-      expandedValue: 'This is item number 2',
+      header: 'Vird Takibi',
+      expandedWidget: Container(),
     ),
   ];
 
@@ -44,11 +46,11 @@ class _TrackPageState extends State<TrackPage> {
             return ExpansionPanel(
               headerBuilder: (BuildContext context, bool isExpanded) {
                 return ListTile(
-                  title: Text(item.headerValue),
+                  title: Text(item.header),
                 );
               },
               body: ListTile(
-                title: Text(item.expandedValue),
+                title: item.expandedWidget,
                 subtitle: Text('To delete this panel, tap the trash can icon'),
                 trailing: Icon(Icons.delete),
                 // onTap: () {

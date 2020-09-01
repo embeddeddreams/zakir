@@ -107,7 +107,7 @@ class _AppPageState extends State<AppPage> {
         title: Text('Program'),
       ),
       BottomNavigationBarItem(
-        icon: Icon(Icons.settings),
+        icon: Icon(Icons.person),
         title: Text('Hesabım'),
       ),
     ];
