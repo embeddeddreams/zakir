@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zakir/constants.dart';
-import 'package:zakir/src/models/zikir_list_vm.dart';
+import 'package:zakir/src/models/view_models/zikir_list_vm.dart';
 
 class ZikirItem extends StatefulWidget {
   final ZikirListVM item;

@@ -1,5 +1,19 @@
 import 'package:flutter/widgets.dart';
 
+class Keys {
+  static const USER_TOKEN = "UserToken";
+  static const USER_FIREBASE_TOKEN = "UserFirebaseToken";
+  static const IOS_VERSION = "5.0.3";
+  static const ANDROID_VERSION = "5.0.3";
+  static const SHOW_VERSION_UPDATE = "ShowVersionUpdate";
+  static const int TIMEOUT_INTERVAL = 15; //servis istekleri icin verilen sure
+}
+
+class ApiServiceUrl {
+  static final _baseUrl = 'https://gelal.com/api/';
+  static final checkVersion = _baseUrl + 'membership/1.0/userdevice/version';
+}
+
 class AppColors {
   static final forestGreen = const Color(0xff1A4314);
   static final green = const Color(0xff2C5E1A);

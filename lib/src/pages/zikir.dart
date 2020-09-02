@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:zakir/src/models/zikir.dart';
+import 'package:zakir/src/models/entities/zikir.dart';
 import 'package:zakir/src/widgets/player_trigger.dart';
 import 'package:zakir/src/widgets/source_dialog_box.dart';
 
@@ -94,6 +94,7 @@ class _ZikirPageState extends State<ZikirPage> {
     return Scaffold(
       key: _scaffoldKey,
       body: SafeArea(
+        // bottom: false,
         child: SlidingUpPanel(
           controller: _pc,
           maxHeight: 100,
@@ -173,7 +174,7 @@ class _ZikirPageState extends State<ZikirPage> {
                       ),
                     ),
                     Positioned(
-                      bottom: 25,
+                      bottom: 30,
                       child: Container(
                         width: MediaQuery.of(context).size.width,
                         padding: EdgeInsets.fromLTRB(20, 0, 20, 5),

@@ -6,3 +6,5 @@ enum ZikirType {
   Trouble,
   BeforeSleep,
 }
+
+enum RequestType { Get, Post, Put, Delete }
