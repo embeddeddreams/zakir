@@ -51,12 +51,10 @@ class _SourceDialogBoxState extends State<SourceDialogBox> {
                       child: Text(
                         widget.narration ?? "",
                         textAlign: TextAlign.justify,
-                        style: GoogleFonts.montserrat(
-                          textStyle: TextStyle(
-                            color: AppColors.indigoDark,
-                            // fontWeight: FontWeight.w500,
-                            fontSize: 16,
-                          ),
+                        style: TextStyle(
+                          color: AppColors.indigoDark,
+                          // fontWeight: FontWeight.w500,
+                          fontSize: 16,
                         ),
                       ),
                     ),

@@ -34,6 +34,8 @@ class _ListPageState extends State<ListPage> with TickerProviderStateMixin {
   int _lastIndex = 0;
   int _lastType;
   List _allRawData = List<ZikirListVM>();
+  List toProgressShow = ["morning"];
+  List progressRecords = List<int>();
 
   @override
   void initState() {
@@ -52,6 +54,7 @@ class _ListPageState extends State<ListPage> with TickerProviderStateMixin {
         item.text = item.text ?? _formatSurah(item.textArray);
         return item;
       }).toList();
+      // _getProgress();
     });
   }
 
@@ -110,7 +113,10 @@ class _ListPageState extends State<ListPage> with TickerProviderStateMixin {
                           ZikirType.Awakening.index,
                           AppIcons.awakening,
                           onTap: () {
-                            _goToZikir(ZikirType.Awakening.index);
+                            _goToZikir(
+                              ZikirType.Awakening.index,
+                              typeKey: "awakening",
+                            );
                           },
                         ),
                         ZListItem(
@@ -119,7 +125,10 @@ class _ListPageState extends State<ListPage> with TickerProviderStateMixin {
                           AppIcons.morning,
                           subtitle: "Sabah namazı ile öğle namazı arasında",
                           onTap: () {
-                            _goToZikir(ZikirType.Morning.index);
+                            _goToZikir(
+                              ZikirType.Morning.index,
+                              typeKey: "morning",
+                            );
                           },
                         ),
                         ZListItem(
@@ -211,12 +220,13 @@ class _ListPageState extends State<ListPage> with TickerProviderStateMixin {
     );
   }
 
-  _goToZikir(int typeIndex) {
+  _goToZikir(int typeIndex, {String typeKey}) {
     _saveLastType(typeIndex);
     Navigator.of(context)
         .push(
       MaterialPageRoute(
-        builder: (BuildContext context) => ZikirPage(type: typeIndex),
+        builder: (BuildContext context) =>
+            ZikirPage(type: typeIndex, typeKey: typeKey),
       ),
     )
         .then((_) {
@@ -235,6 +245,11 @@ class _ListPageState extends State<ListPage> with TickerProviderStateMixin {
       this._lastIndex = instances.getInt('lastZikirIndex') ?? 0;
       this._lastType = instances.getInt('lastZikirType');
     });
+  }
+
+  Future<int> _getProgress(String key, int indexInGroup) async {
+    SharedPreferences instances = await SharedPreferences.getInstance();
+    return instances.getInt(key + "_" + indexInGroup.toString()) ?? 0;
   }
 
   //  Stack(
