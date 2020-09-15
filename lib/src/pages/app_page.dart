@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:in_app_update/in_app_update.dart';
 import 'package:provider/provider.dart';
 import 'package:zakir/constants.dart';
 import 'package:zakir/src/pages/favorites_page.dart';
@@ -23,26 +25,34 @@ class AppPage extends StatefulWidget {
 
 class _AppPageState extends State<AppPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  AppUpdateInfo _updateInfo;
   int _index = 0;
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
   @override
   void initState() {
-    var initializationSettingsAndroid =
-        AndroidInitializationSettings('logotransparent');
-    var initializationSettingsIOs = IOSInitializationSettings();
-    var initSetttings = InitializationSettings(
-        initializationSettingsAndroid, initializationSettingsIOs);
+    // var initializationSettingsAndroid =
+    //     AndroidInitializationSettings('logotransparent');
+    // var initializationSettingsIOs = IOSInitializationSettings();
+    // var initSetttings = InitializationSettings(
+    //     initializationSettingsAndroid, initializationSettingsIOs);
 
-    flutterLocalNotificationsPlugin
-        .initialize(initSetttings, onSelectNotification: onSelectNotification)
-        .then((value) {
-      // if (value) scheduleNotification();
-    });
-
+    // flutterLocalNotificationsPlugin
+    //     .initialize(initSetttings, onSelectNotification: onSelectNotification)
+    //     .then((value) {
+    //   // if (value) scheduleNotification();
+    // });
+    checkForUpdate();
     loadData();
     super.initState();
+  }
+
+  Future<void> checkForUpdate() async {
+    InAppUpdate.checkForUpdate().then((info) {
+      if (info.updateAvailable != null && info.updateAvailable == true)
+        _showDialog();
+    }).catchError((e) => print({"error", e}));
   }
 
   PageController pageController = PageController(
@@ -54,6 +64,48 @@ class _AppPageState extends State<AppPage> {
     String incoming = await DefaultAssetBundle.of(context)
         .loadString("assets/data/data.json");
     Provider.of<AppStateProvider>(context, listen: false).setAllData(incoming);
+  }
+
+  _showDialog() async {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: AppColors.forestGreen,
+              title: Text(
+                "Yeni güncelleme yayında!",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              content: Text(
+                "Lütfen uygulamayı güncelleyin.",
+                style: TextStyle(color: Colors.white),
+              ),
+              actions: [
+                FlatButton(
+                  onPressed: _updateInfo?.updateAvailable != null &&
+                          _updateInfo?.updateAvailable == true
+                      ? () {
+                          InAppUpdate.performImmediateUpdate()
+                              .catchError((e) => print(e));
+                        }
+                      : null,
+                  child: Text(
+                    "Güncelle",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                )
+              ],
+            );
+          });
+    });
+    // await Future.delayed(Duration(milliseconds: 50));
   }
 
   @override
@@ -93,7 +145,12 @@ class _AppPageState extends State<AppPage> {
         showUnselectedLabels: true,
         items: buildBottomNavBarItems(),
       ),
-      body: PageView(
+      body:
+          // true
+          // _updateInfo?.updateAvailable != null &&
+          //         _updateInfo.updateAvailable == true
+          // ?
+          PageView(
         physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
         onPageChanged: (index) {
@@ -151,40 +208,40 @@ class _AppPageState extends State<AppPage> {
     );
   }
 
-  Future<void> scheduleNotification() async {
-    var scheduledNotificationDateTime =
-        DateTime.now().add(Duration(seconds: 5));
-    var androidSpecs = AndroidNotificationDetails(
-      'id', 'name', 'description',
-      priority: Priority.High, importance: Importance.Max,
-      // icon: 'flutter_devs',
-      // largeIcon: DrawableResourceAndroidBitmap('flutter_devs'),
-    );
-    var iOSSpecs = IOSNotificationDetails();
-    var platformSpecs = NotificationDetails(androidSpecs, iOSSpecs);
-    await flutterLocalNotificationsPlugin.schedule(
-      0,
-      'scheduled title',
-      'scheduled body',
-      scheduledNotificationDateTime,
-      platformSpecs,
-      payload: '1',
-      androidAllowWhileIdle: true,
-    );
-  }
+  // Future<void> scheduleNotification() async {
+  //   var scheduledNotificationDateTime =
+  //       DateTime.now().add(Duration(seconds: 5));
+  //   var androidSpecs = AndroidNotificationDetails(
+  //     'id', 'name', 'description',
+  //     priority: Priority.High, importance: Importance.Max,
+  //     // icon: 'flutter_devs',
+  //     // largeIcon: DrawableResourceAndroidBitmap('flutter_devs'),
+  //   );
+  //   var iOSSpecs = IOSNotificationDetails();
+  //   var platformSpecs = NotificationDetails(androidSpecs, iOSSpecs);
+  //   await flutterLocalNotificationsPlugin.schedule(
+  //     0,
+  //     'scheduled title',
+  //     'scheduled body',
+  //     scheduledNotificationDateTime,
+  //     platformSpecs,
+  //     payload: '1',
+  //     androidAllowWhileIdle: true,
+  //   );
+  // }
 
   Future<void> cancelNotification() async {
     await flutterLocalNotificationsPlugin.cancel(0);
   }
 
-  showNotification() async {
-    var android = new AndroidNotificationDetails(
-        'id', 'channel ', 'description',
-        priority: Priority.High, importance: Importance.Max);
-    var iOS = new IOSNotificationDetails();
-    var platform = new NotificationDetails(android, iOS);
-    await flutterLocalNotificationsPlugin.show(
-        0, 'Flutter devs', 'Flutter Local Notification Demo', platform,
-        payload: '1');
-  }
+  // showNotification() async {
+  //   var android = new AndroidNotificationDetails(
+  //       'id', 'channel ', 'description',
+  //       priority: Priority.High, importance: Importance.Max);
+  //   var iOS = new IOSNotificationDetails();
+  //   var platform = new NotificationDetails(android, iOS);
+  //   await flutterLocalNotificationsPlugin.show(
+  //       0, 'Flutter devs', 'Flutter Local Notification Demo', platform,
+  //       payload: '1');
+  // }
 }

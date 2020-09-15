@@ -90,9 +90,9 @@ class _AccountPageState extends State<AccountPage> {
             child: Text(
               "Sevaba ortak olmak ister misin?",
               style: TextStyle(
-                color: AppColors.green,
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
+                color: AppColors.forestGreen,
+                fontSize: 16,
+                // fontWeight: FontWeight.w500,
               ),
             ),
           ),
@@ -218,6 +218,7 @@ class _AccountPageState extends State<AccountPage> {
                     },
                   ),
                 ),
+
                 // Divider(
                 //   height: 0,
                 //   thickness: 1,
@@ -242,6 +243,26 @@ class _AccountPageState extends State<AccountPage> {
                 //   ),
                 // ),
               ],
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 20),
+            color: Colors.white,
+            height: 60,
+            child: FlatButton(
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Güncelle",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    Icon(Icons.chevron_right),
+                  ]),
+              onPressed: () {
+                _laucnhUrl(
+                    "https://play.google.com/store/apps/details?id=com.sunnahteam.zakir&hl=tr&showAllReviews=true");
+              },
             ),
           ),
           //   Container(
