@@ -21,7 +21,6 @@ class ZikirGroupItem extends StatefulWidget {
 }
 
 class _ZikirGroupItemState extends State<ZikirGroupItem> {
-
   @override
   void initState() {
     //
@@ -31,50 +30,58 @@ class _ZikirGroupItemState extends State<ZikirGroupItem> {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Image.asset(
-        widget.iconPath,
-        width: 32,
-        height: 32,
+    return Container(
+      height: 70,
+      decoration: BoxDecoration(
+        border: Border(bottom: BorderSide(color: Colors.black12)),
       ),
-      title: Text(
-        widget.title,
-        style: TextStyle(fontWeight: FontWeight.w500),
+      child: Center(
+        child: ListTile(
+          onTap: widget.onTap,
+          leading: Image.asset(
+            widget.iconPath,
+            width: 32,
+            height: 32,
+          ),
+          title: Text(
+            widget.title,
+            style: TextStyle(fontWeight: FontWeight.w500),
+          ),
+          subtitle: widget.subtitle == null
+              ? null
+              : Text(
+                  widget.subtitle,
+                  style: TextStyle(fontSize: 12),
+                ),
+          trailing: Icon(
+            Icons.chevron_right,
+            color: AppColors.green,
+          ),
+          //  PopupMenuButton<int>(
+          //   padding: EdgeInsets.zero,
+          //   onSelected: (int val) {
+          //     if (val == 1) addAllToVird(widget.zikirIds);
+          //   },
+          //   itemBuilder: (context) => [
+          //     PopupMenuItem(
+          //       value: 1,
+          //       child: Text(
+          //         "Virdime Ekle",
+          //         style: TextStyle(color: Colors.black87),
+          //       ),
+          //     ),
+          //     // PopupMenuItem(
+          //     //   value: 2,
+          //     //   enabled: false,
+          //     //   child: Text(
+          //     //     "Hatırlatıcı Ekle",
+          //     //     style: TextStyle(color: Colors.black26),
+          //     //   ),
+          //     // ),
+          //   ],
+          // ),
+        ),
       ),
-      subtitle: widget.subtitle == null
-          ? null
-          : Text(
-              widget.subtitle,
-              style: TextStyle(fontSize: 12),
-            ),
-      trailing: Icon(
-        Icons.chevron_right,
-        color: AppColors.green,
-      ),
-      //  PopupMenuButton<int>(
-      //   padding: EdgeInsets.zero,
-      //   onSelected: (int val) {
-      //     if (val == 1) addAllToVird(widget.zikirIds);
-      //   },
-      //   itemBuilder: (context) => [
-      //     PopupMenuItem(
-      //       value: 1,
-      //       child: Text(
-      //         "Virdime Ekle",
-      //         style: TextStyle(color: Colors.black87),
-      //       ),
-      //     ),
-      //     // PopupMenuItem(
-      //     //   value: 2,
-      //     //   enabled: false,
-      //     //   child: Text(
-      //     //     "Hatırlatıcı Ekle",
-      //     //     style: TextStyle(color: Colors.black26),
-      //     //   ),
-      //     // ),
-      //   ],
-      // ),
-      onTap: widget.onTap,
     );
   }
 }
