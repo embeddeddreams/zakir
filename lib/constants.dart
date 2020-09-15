@@ -6,6 +6,8 @@ class Keys {
   static const IOS_VERSION = "5.0.3";
   static const ANDROID_VERSION = "5.0.3";
   static const SHOW_VERSION_UPDATE = "ShowVersionUpdate";
+  static const CURRENT_VIRD = "currentVird";
+  static const FAVORITES = "favorites";
   static const int TIMEOUT_INTERVAL = 15; //servis istekleri icin verilen sure
 }
 

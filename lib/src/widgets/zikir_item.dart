@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:zakir/constants.dart';
 import 'package:zakir/src/models/view_models/zikir_list_vm.dart';
+import 'package:zakir/src/providers/app_state_provider.dart';
 
 class ZikirItem extends StatefulWidget {
   final ZikirListVM item;
+  final VoidCallback delete;
 
-  ZikirItem(this.item);
+  ZikirItem(this.item,{this.delete});
 
   @override
   State<StatefulWidget> createState() {
@@ -14,6 +17,14 @@ class ZikirItem extends StatefulWidget {
 }
 
 class _ZikirItemState extends State<ZikirItem> {
+  AppStateProvider _provider;
+
+  @override
+  void initState() {
+    _provider = Provider.of<AppStateProvider>(context, listen: false);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,26 +32,23 @@ class _ZikirItemState extends State<ZikirItem> {
         border: Border(bottom: BorderSide(color: Colors.black26)),
       ),
       // margin: EdgeInsets.symmetric(vertical: 2),
-      padding: EdgeInsets.all(16),
-      height: widget.item.description == null ? 170 : 195,
+      padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
+      height: widget.item.description == null ? 155 : 175,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           widget.item.description == null
               ? Container()
-              : Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  child: Text(
-                    widget.item.description,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: AppColors.indigoDark,
-                      fontWeight: FontWeight.bold,
-                    ),
+              : Text(
+                  widget.item.description,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: AppColors.indigoDark,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
           Padding(
-            padding: const EdgeInsets.only(bottom: 10),
+            padding: const EdgeInsets.only(bottom: 4),
             child: Text(
               widget.item.text,
               textDirection: TextDirection.rtl,
@@ -61,16 +69,24 @@ class _ZikirItemState extends State<ZikirItem> {
                   : Text(
                       widget.item.tag,
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: FontWeight.w500,
                         color: AppColors.greenLight,
                       ),
                     ),
-              Text(
-                "Virdime Ekle",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: AppColors.green,
+              Container(
+                width: 50,
+                height: 30,
+                child: FlatButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: widget.delete,
+                  child: Text(
+                    "Kaldır",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.red.withAlpha(200),
+                    ),
+                  ),
                 ),
               ),
             ],

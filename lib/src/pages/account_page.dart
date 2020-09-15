@@ -1,4 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:rate_my_app/rate_my_app.dart';
+import 'package:share/share.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:zakir/constants.dart';
 
 class AccountPage extends StatefulWidget {
@@ -9,6 +14,20 @@ class AccountPage extends StatefulWidget {
 class _AccountPageState extends State<AccountPage> {
   bool _status = true;
   final FocusNode myFocusNode = FocusNode();
+  RateMyApp _rateMyApp = RateMyApp(
+    preferencesPrefix: 'rate_my_app_zakir',
+    // minDays: 2,
+    // minLaunches: 3,
+    // remindDays: 3,
+    // remindLaunches: 5,
+    googlePlayIdentifier: 'com.sunnahteam.zakir',
+  );
+
+  // @override
+  // void initState() {
+  //   _rateMyApp.conditions..reset();
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +113,27 @@ class _AccountPageState extends State<AccountPage> {
                           ),
                           Icon(Icons.chevron_right),
                         ]),
-                    onPressed: () {},
+                    onPressed: () async {
+                      final RenderBox box = context.findRenderObject();
+                      if (Platform.isAndroid)
+                        await Share.share(
+                            "Güvenilir hadis kaynaklarından derlenmiş zikirleri bir arada bulabileceğin harika bir uygulama!" +
+                                "\nhttps://play.google.com/store/apps/details?id=com.sunnahteam.zakir&hl=tr",
+                            subject: "Zakir",
+                            sharePositionOrigin:
+                                box.localToGlobal(Offset.zero) & box.size);
+                      // else
+                      //   showDialog(
+                      //     context: context,
+                      //     child: new AlertDialog(
+                      //       content: new FlatButton(
+                      //         child: new Text(
+                      //             "Çok yakında Apple Store da olacağız"),
+                      //         onPressed: () => Navigator.pop(context, true),
+                      //       ),
+                      //     ),
+                      //   );
+                    },
                   ),
                 ),
                 Divider(
@@ -113,75 +152,150 @@ class _AccountPageState extends State<AccountPage> {
                           ),
                           Icon(Icons.chevron_right),
                         ]),
-                    onPressed: () {},
-                  ),
-                ),
-                Divider(
-                  height: 0,
-                  thickness: 1,
-                ),
-                Container(
-                  height: 60,
-                  child: FlatButton(
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            "Bağış Yap",
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: AppColors.green,
-                              fontWeight: FontWeight.bold,
-                            ),
+                    onPressed: () {
+                      _rateMyApp.init().then((_) {
+                        print("hop");
+                        // if (_rateMyApp.shouldOpenDialog) {
+                        _rateMyApp.showStarRateDialog(
+                          context,
+                          title: "Uygulamamızı değerlendir!",
+                          message:
+                              "Uygulamamızı Google Play'de puanla ve yorumunu yap! Fikirlerin bizim için önemli!",
+                          actionsBuilder: (value, stars) {
+                            return [
+                              FlatButton(
+                                onPressed: () async {
+                                  await _rateMyApp.callEvent(
+                                      RateMyAppEventType.laterButtonPressed);
+                                  Navigator.pop<RateMyAppDialogButton>(
+                                      context, RateMyAppDialogButton.later);
+                                },
+                                child: Text(
+                                  "Ertele",
+                                  style: TextStyle(color: Colors.black54),
+                                ),
+                              ),
+                              FlatButton(
+                                onPressed: () async {
+                                  await _rateMyApp.callEvent(
+                                      RateMyAppEventType.rateButtonPressed);
+                                  Navigator.pop<RateMyAppDialogButton>(
+                                      context, RateMyAppDialogButton.rate);
+                                  _laucnhUrl(
+                                      "https://play.google.com/store/apps/details?id=com.sunnahteam.zakir&hl=tr&showAllReviews=true");
+                                },
+                                child: Text(
+                                  "Değerlendir",
+                                  style: TextStyle(color: AppColors.green),
+                                ),
+                              ),
+                              // FlatButton(
+                              //   onPressed: () async {
+                              //     await _rateMyApp.callEvent(
+                              //         RateMyAppEventType.noButtonPressed);
+                              //     Navigator.pop<RateMyAppDialogButton>(
+                              //         context, RateMyAppDialogButton.rate);
+                              //   },
+                              //   child: Text("Hayır"),
+                              // ),
+                            ];
+                          },
+                          dialogStyle: DialogStyle(
+                            titleAlign: TextAlign.center,
+                            messageAlign: TextAlign.center,
+                            messagePadding: EdgeInsets.only(bottom: 20.0),
                           ),
-                          Icon(Icons.chevron_right),
-                        ]),
-                    onPressed: () {},
+                          starRatingOptions: StarRatingOptions(
+                            starsFillColor: AppColors.green,
+                            starsBorderColor: Colors.black45,
+                            initialRating: 5,
+                          ),
+                          onDismissed: () => _rateMyApp
+                              .callEvent(RateMyAppEventType.laterButtonPressed),
+                        );
+                        // }
+                      });
+                    },
                   ),
                 ),
+                // Divider(
+                //   height: 0,
+                //   thickness: 1,
+                // ),
+                // Container(
+                //   height: 60,
+                //   child: FlatButton(
+                //     child: Row(
+                //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //         children: <Widget>[
+                //           Text(
+                //             "Bağış Yap",
+                //             style: TextStyle(
+                //               fontSize: 16,
+                //               color: AppColors.green,
+                //               fontWeight: FontWeight.bold,
+                //             ),
+                //           ),
+                //           Icon(Icons.chevron_right),
+                //         ]),
+                //     onPressed: () {},
+                //   ),
+                // ),
               ],
             ),
           ),
-          Container(
-            height: 180,
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 20),
-            color: Colors.white,
-            height: 60,
-            child: FlatButton(
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "Bildirim Ayarları",
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    Icon(Icons.chevron_right),
-                  ]),
-              onPressed: () {},
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 20),
-            color: Colors.white,
-            height: 60,
-            child: FlatButton(
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "Çıkış Yap",
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    Icon(Icons.chevron_right),
-                  ]),
-              onPressed: () {},
-            ),
-          ),
+          //   Container(
+          //     height: 180,
+          //   ),
+          //   Container(
+          //     margin: EdgeInsets.only(top: 20),
+          //     color: Colors.white,
+          //     height: 60,
+          //     child: FlatButton(
+          //       child: Row(
+          //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //           children: <Widget>[
+          //             Text(
+          //               "Bildirim Ayarları",
+          //               style: TextStyle(fontSize: 16),
+          //             ),
+          //             Icon(Icons.chevron_right),
+          //           ]),
+          //       onPressed: () {},
+          //     ),
+          //   ),
+          //   Container(
+          //     margin: EdgeInsets.only(top: 20),
+          //     color: Colors.white,
+          //     height: 60,
+          //     child: FlatButton(
+          //       child: Row(
+          //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //           children: <Widget>[
+          //             Text(
+          //               "Çıkış Yap",
+          //               style: TextStyle(fontSize: 16),
+          //             ),
+          //             Icon(Icons.chevron_right),
+          //           ]),
+          //       onPressed: () {},
+          //     ),
+          //   ),
         ],
       ),
     );
+  }
+
+  Future<void> _laucnhUrl(String url) async {
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+        forceSafariVC: false,
+        forceWebView: false,
+      );
+    } else {
+      throw 'Bu linke ulaşılamadı $url';
+    }
   }
 
   Widget _getEditIcon() {

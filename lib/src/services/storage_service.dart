@@ -44,7 +44,7 @@ class StorageService {
   Future<void> setFirebaseTokenAsync(String token) async {
     SharedPreferences instances = await getInstanceAsync();
     instances.setString(Keys.USER_FIREBASE_TOKEN, token);
-  }  
+  }
 
   ///Kullanıcıya splash ekran bilgisini atar.
   Future<void> setUpdatePopupShowed(bool showed) async {
@@ -57,5 +57,27 @@ class StorageService {
     SharedPreferences instances = await getInstanceAsync();
     bool boolValue = instances.getBool(Keys.SHOW_VERSION_UPDATE);
     return boolValue;
+  }
+
+  Future<List<String>> getVirdContent() async {
+    SharedPreferences instances = await getInstanceAsync();
+    List<String> stringList = instances.getStringList(Keys.CURRENT_VIRD);
+    return stringList;
+  }
+
+  Future<void> setVirdContent(List<String> newArray) async {
+    SharedPreferences instances = await getInstanceAsync();
+    instances.setStringList(Keys.CURRENT_VIRD, newArray);
+  }
+
+  Future<List<String>> getFavorites() async {
+    SharedPreferences instances = await getInstanceAsync();
+    List<String> stringList = instances.getStringList(Keys.FAVORITES);
+    return stringList;
+  }
+
+  Future<void> setFavorites(List<String> newArray) async {
+    SharedPreferences instances = await getInstanceAsync();
+    instances.setStringList(Keys.FAVORITES, newArray);
   }
 }

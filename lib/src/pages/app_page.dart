@@ -1,12 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:provider/provider.dart';
 import 'package:zakir/constants.dart';
+import 'package:zakir/src/pages/favorites_page.dart';
+import 'package:zakir/src/providers/app_state_provider.dart';
 
 import 'account_page.dart';
 import 'list_page.dart';
 import 'track_page.dart';
-import 'zikir.dart';
+import 'zikir_page.dart';
 // import 'package:kakule/src/widgets/drawer.dart';
 
 class AppPage extends StatefulWidget {
@@ -36,6 +41,7 @@ class _AppPageState extends State<AppPage> {
       // if (value) scheduleNotification();
     });
 
+    loadData();
     super.initState();
   }
 
@@ -43,6 +49,12 @@ class _AppPageState extends State<AppPage> {
     initialPage: 0,
     keepPage: true,
   );
+
+  loadData() async {
+    String incoming = await DefaultAssetBundle.of(context)
+        .loadString("assets/data/data.json");
+    Provider.of<AppStateProvider>(context, listen: false).setAllData(incoming);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,8 +89,8 @@ class _AppPageState extends State<AppPage> {
         unselectedItemColor: Colors.black26,
         iconSize: 30,
         type: BottomNavigationBarType.fixed,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
         items: buildBottomNavBarItems(),
       ),
       body: PageView(
@@ -89,7 +101,7 @@ class _AppPageState extends State<AppPage> {
         },
         children: <Widget>[
           ListPage(),
-          TrackPage(),
+          FavoritesPage(),
           AccountPage(),
         ],
       ),
@@ -99,16 +111,20 @@ class _AppPageState extends State<AppPage> {
   List<BottomNavigationBarItem> buildBottomNavBarItems() {
     return [
       BottomNavigationBarItem(
-        icon: Icon(Icons.reorder),
-        title: Text('Liste'),
+        icon: Icon(Icons.home),
+        title: Text('Anasayfa'),
       ),
-       BottomNavigationBarItem(
-        icon: Icon(Icons.timeline),
-        title: Text('Program'),
+      // BottomNavigationBarItem(
+      //   icon: Icon(Icons.person),
+      //   title: Text('Program'),
+      // ),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.favorite),
+        title: Text('Favoriler'),
       ),
       BottomNavigationBarItem(
-        icon: Icon(Icons.person),
-        title: Text('Hesabım'),
+        icon: Icon(Icons.settings),
+        title: Text('Ayarlar'),
       ),
     ];
   }

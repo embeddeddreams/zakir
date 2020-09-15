@@ -1,14 +1,13 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:zakir/src/models/entities/zikir.dart';
+import 'package:zakir/src/models/enums.dart';
+import 'package:zakir/src/providers/app_state_provider.dart';
 import 'package:zakir/src/widgets/player_trigger.dart';
 import 'package:zakir/src/widgets/ripple_effect.dart';
 import 'package:zakir/src/widgets/source_dialog_box.dart';
@@ -16,17 +15,26 @@ import 'package:zakir/src/widgets/source_dialog_box.dart';
 import '../../constants.dart';
 
 class ZikirPage extends StatefulWidget {
+  final List<dynamic> rawData;
   final int type;
   final String typeKey;
   final int lastIndex;
+  final List<int> favoriteIds;
 
-  ZikirPage({@required this.type, this.typeKey, this.lastIndex});
+  ZikirPage({
+    @required this.rawData,
+    @required this.type,
+    @required this.favoriteIds,
+    this.typeKey,
+    this.lastIndex,
+  });
 
   @override
   _ZikirPageState createState() => _ZikirPageState();
 }
 
 class _ZikirPageState extends State<ZikirPage> {
+  AppStateProvider _provider;
   List<Zikir> data = List();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController = new ScrollController();
@@ -40,44 +48,10 @@ class _ZikirPageState extends State<ZikirPage> {
   final pageKey = RipplePage.createGlobalKey();
   final effectKey = RippleEffect.createGlobalKey();
 
-  static const _vowelGroup1 = [
-    1575,
-    1576,
-    1578,
-    1579,
-    1580,
-    1583,
-    1584,
-    1585,
-    1586,
-    1587,
-    1588,
-    1601,
-    1603,
-    1604,
-    1605,
-    1606,
-    1608,
-    1607,
-    1610,
-  ];
-  static const _vowelGroup2 = [
-    1581,
-    1582,
-    1585,
-    1589,
-    1590,
-    1591,
-    1592,
-    1593,
-    1594,
-    1602,
-  ];
-
   @override
   void initState() {
     this._index = widget.lastIndex ?? 0;
-    _loadData();
+    setData();
     // if (Platform.isIOS) {
     //   if (_audioCache.fixedPlayer != null) {
     //     _audioCache.fixedPlayer.startHeadlessService();
@@ -87,21 +61,15 @@ class _ZikirPageState extends State<ZikirPage> {
     super.initState();
   }
 
-  _loadData() async {
-    String toStore = "";
-    String incoming = await DefaultAssetBundle.of(context)
-        .loadString("assets/data/data.json");
+  setData() async {
     setState(() {
-      var rawData = (json.decode(incoming) as List)
-          .where((e) => e["types"].contains(widget.type))
-          .toList();
-      data = rawData.map((e) {
+      data = widget.rawData.map((e) {
         var item = Zikir.fromJson(e);
+        item.isFavorited = widget.favoriteIds.contains(item.id);
         item.text = item.text ?? _formatSurah(item.textArray);
-        toStore += _generateTransliteration(item.text);
         return item;
       }).toList();
-      _charLengths = rawData
+      _charLengths = widget.rawData
           .map((x) => x["textArray"] == null
               ? (x["text"].length as int) * (x["count"] as int)
               : (x["textArray"]
@@ -115,8 +83,6 @@ class _ZikirPageState extends State<ZikirPage> {
         _elapsedCharLength =
             _charLengths.sublist(0, _index).fold(0, (p, c) => p + c);
     });
-
-    writeFile(toStore); // writeFile(_generateTransliteration(item.text))
   }
 
   int _calculateStartPoint() {
@@ -131,6 +97,7 @@ class _ZikirPageState extends State<ZikirPage> {
 
   @override
   Widget build(BuildContext context) {
+    _provider = Provider.of<AppStateProvider>(context);
     // SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
@@ -141,7 +108,6 @@ class _ZikirPageState extends State<ZikirPage> {
       child: Scaffold(
         key: _scaffoldKey,
         body: SafeArea(
-          // bottom: false,
           child: SlidingUpPanel(
             controller: _pc,
             maxHeight: 100,
@@ -205,6 +171,30 @@ class _ZikirPageState extends State<ZikirPage> {
                                     ],
                                   ),
                                 ),
+                                data[_index].transcription.isNotEmpty
+                                    ? Container(
+                                        margin: EdgeInsets.only(bottom: 10),
+                                        child: Row(
+                                          children: <Widget>[
+                                            Flexible(
+                                              fit: FlexFit.loose,
+                                              child: Text(
+                                                data[_index].transcription,
+                                                textAlign: TextAlign.justify,
+                                                style: GoogleFonts.montserrat(
+                                                  textStyle: TextStyle(
+                                                    color: Colors.black54,
+                                                    fontStyle: FontStyle.italic,
+                                                    fontSize: 16,
+                                                    height: 1.3,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    : Container(),
                                 Container(
                                   child: Row(
                                     children: <Widget>[
@@ -285,21 +275,28 @@ class _ZikirPageState extends State<ZikirPage> {
                                     ),
                                   ),
                                   Container(
-                                    width: 200,
-                                    child: Text(
-                                      data[_index].reference ?? "",
-                                      style: GoogleFonts.libreBaskerville(
-                                        textStyle: TextStyle(
-                                          color: AppColors.greyDark,
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 12,
-                                        ),
+                                    margin: const EdgeInsets.only(right: 10),
+                                    width: 32,
+                                    height: 32,
+                                    child: IconButton(
+                                      padding: EdgeInsets.zero,
+                                      onPressed: () {
+                                        data[_index].isFavorited
+                                            ? deleteFromFavorites(
+                                                data[_index].id)
+                                            : addToFavorites(data[_index].id);
+                                      },
+                                      icon: Icon(
+                                        Icons.favorite,
+                                        color: data[_index].isFavorited
+                                            ? AppColors.green
+                                            : Colors.black26,
                                       ),
-                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
                                 ],
                               ),
+                              // widget.type == ZikirPageType.Group.index ?
                               Container(
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
@@ -330,6 +327,7 @@ class _ZikirPageState extends State<ZikirPage> {
                                   ],
                                 ),
                               ),
+                              // : Container(),
                             ],
                           ),
                         ),
@@ -363,6 +361,22 @@ class _ZikirPageState extends State<ZikirPage> {
         ),
       ),
     );
+  }
+
+  addToFavorites(int id) {
+    print(id.toString());
+    setState(() {
+      data[_index].isFavorited = true;
+    });
+    _provider.addToFavorites(id);
+  }
+
+  deleteFromFavorites(int id) {
+    setState(() {
+      data[_index].isFavorited = false;
+    });
+    print(id.toString());
+    _provider.deleteFromFavorites(id);
   }
 
   double _setHeight(Zikir e) {
@@ -487,167 +501,5 @@ class _ZikirPageState extends State<ZikirPage> {
       }
     });
     _scrollController.jumpTo(0);
-  }
-
-  writeFile(String textData) async {
-    final Directory directory = await getExternalStorageDirectory();
-    final File file = File('${directory.path}/transcript.txt');
-    // file.readAsString().then((String contents) {
-    //   contents = contents + "\n\n" + textData;
-    //   print(contents);
-
-    // });
-    file.writeAsString(textData, mode: FileMode.append).then((File file) {
-      print("stored");
-    });
-  }
-
-  String _generateTransliteration(String text) {
-    // print("للّٰهُ".codeUnits);
-    var charCodes = text.codeUnits;
-    var temp = "";
-    charCodes.asMap().forEach((i, codeUnit) {
-      // if(codeUnit==1604 && charCodes[i + 1]==1604 && charCodes[i + 2]==1617 && charCodes[i + 3]==1648 && charCodes[i + 4]==1607 )
-      if (!((codeUnit > 1610 && codeUnit < 1619) ||
-          codeUnit == 1622 ||
-          codeUnit == 1648)) {
-        if (i < charCodes.length - 1 &&
-            _checkMadd(codeUnit, charCodes[i + 1]) &&
-            i > 0)
-          _setMadd(charCodes[i - 1], codeUnit, temp);
-        else
-          temp += _getTurkishEquivalent(codeUnit);
-      } else if (codeUnit == 1617 && i > 0) // şedde
-        temp += _getTurkishEquivalent(charCodes[i - 1]);
-      else if (codeUnit == 1618 &&
-          i > 0 &&
-          (charCodes[i - 1] == 1575 || charCodes[i - 1] == 1593)) // sukuun/cezm
-        temp += "'"; // _getSoqoon(charCodes[i - 1]);
-      else if (i > 0) temp += _getVowel(charCodes[i - 1], codeUnit);
-    });
-    temp += "\n\n";
-    return temp;
-    // print(temp);
-    // print({
-    //   utf8.decode([217, 132]),
-    //   utf8.decode([217, 142]),
-    //   utf8.decode([216, 167]),
-    //   utf8.decode([32]),
-    //   utf8.decode([216, 165])
-    // });
-
-    // print(utf8.decode([217,132]));
-  }
-
-  // _checkLafzatullah(){
-  //   1604, 1604, 1617, 1648, 1607
-  // }
-
-  _checkMadd(int charCode, int nextCharCode) {
-    return (charCode == 1575 || charCode == 1610 || charCode == 1608) &&
-        !(nextCharCode == 1614 || nextCharCode == 1616 || nextCharCode == 1615);
-  }
-
-  _setMadd(int previousCharCode, int currentCharCode, String tmp) {
-    tmp.substring(0, tmp.length - 1);
-    if (currentCharCode == 1575) tmp += "â";
-    if (currentCharCode == 1610) tmp += "î";
-    if (currentCharCode == 1608) tmp += "û";
-  }
-
-  _getSoqoon(int charCode) {
-    return charCode == 1575 || charCode == 1593 ? "'" : "";
-  }
-
-  _getShadda(int charCode, int vowelCode) {
-    return charCode == 1575 || charCode == 1593 ? "'" : "";
-  }
-
-  _getVowel(int charCode, int vowelCode) {
-    switch (vowelCode) {
-      case 1614:
-        return _vowelGroup2.contains(charCode) ? "a" : "e";
-      case 1616:
-        return _vowelGroup1.contains(charCode) ? "i" : "ı";
-      case 1615:
-        return "u";
-      case 1611:
-        return _vowelGroup2.contains(charCode) ? "an" : "en";
-      case 1613:
-        return _vowelGroup1.contains(charCode) ? "in" : "ın";
-      case 1612:
-        return "un";
-      case 1648:
-        return "â"; //_vowelGroup2.contains(charCode) ? "â" : "â";
-      case 1622:
-        return "î"; //_vowelGroup1.contains(charCode) ? "î" : "î";
-      default:
-        return "";
-    }
-  }
-
-  _getTurkishEquivalent(int charCode) {
-    switch (charCode) {
-      case 1575:
-        return "a";
-      case 1576:
-        return "b";
-      case 1577:
-      case 1578:
-        return "t";
-      case 1579:
-        return "s̱";
-      case 1580:
-        return "c";
-      case 1581:
-        return "ḥ";
-      case 1582:
-        return "ḫ";
-      case 1583:
-        return "d";
-      case 1584:
-        return "ẕ";
-      case 1585:
-        return "r";
-      case 1586:
-        return "z";
-      case 1587:
-        return "s";
-      case 1588:
-        return "ş";
-      case 1589:
-        return "ṣ";
-      case 1590:
-        return "ḍ";
-      case 1591:
-        return "t";
-      case 1592:
-        return "ẓ";
-      case 1593:
-        return "a";
-      case 1594:
-        return "ğ";
-      case 1601:
-        return "f";
-      case 1602:
-        return "ḳ";
-      case 1603:
-        return "k";
-      case 1604:
-        return "l";
-      case 1605:
-        return "m";
-      case 1606:
-        return "n";
-      case 1608:
-        return "v";
-      case 1607:
-        return "h";
-      case 1609:
-      case 1610:
-        return "y";
-      default:
-        return " ";
-    }
   }
 }

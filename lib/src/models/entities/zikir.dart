@@ -8,8 +8,10 @@ import 'dart:convert';
 // String zikirToJson(Zikir data) => json.encode(data.toJson());
 
 class Zikir {
+  int id;
   String text;
   List<String> textArray;
+  String transcription;
   String translation;
   String narration;
   String authenticity;
@@ -17,10 +19,14 @@ class Zikir {
   int count;
   List<int> types;
   List<String> timeRange;
+  bool isFavorited;
+  bool isInVird;
 
   Zikir({
+    this.id,
     this.text,
     this.textArray,
+    this.transcription,
     this.translation,
     this.narration,
     this.authenticity,
@@ -28,22 +34,30 @@ class Zikir {
     this.count,
     this.types,
     this.timeRange,
+    this.isFavorited = false,
+    this.isInVird = false,
   });
 
   Zikir copyWith({
+    String id,
     String text,
     String textArray,
     String translation,
+    String transcription,
     String narration,
     String authenticity,
     String reference,
     int count,
     List<int> types,
     List<String> timeRange,
+    bool isFavorited,
+    bool isInVird,
   }) =>
       Zikir(
+        id: id ?? this.id,
         text: text ?? this.text,
         textArray: textArray ?? this.textArray,
+        transcription: transcription ?? this.transcription,
         translation: translation ?? this.translation,
         narration: narration ?? this.narration,
         authenticity: authenticity ?? this.authenticity,
@@ -51,13 +65,17 @@ class Zikir {
         count: count ?? this.count,
         types: types ?? this.types,
         timeRange: timeRange ?? this.timeRange,
+        isFavorited: isFavorited ?? this.isFavorited,
+        isInVird: isInVird ?? this.isInVird,
       );
 
   factory Zikir.fromJson(Map<String, dynamic> json) => Zikir(
+        id: json["id"],
         text: json["text"],
         textArray: json["textArray"] == null
             ? null
             : List<String>.from(json["textArray"].map((x) => x)),
+        transcription: json["transcription"],
         translation: json["translation"],
         narration: json["narration"],
         authenticity: json["authenticity"],
@@ -69,9 +87,12 @@ class Zikir {
         timeRange: json["timeRange"] == null
             ? null
             : List<String>.from(json["timeRange"].map((x) => x as String)),
+        isFavorited: json["isFavorited"],
+        isInVird: json["isInVird"],
       );
 
   Map<String, dynamic> toJson() => {
+        "id": id,
         "text": text,
         "textArray": textArray,
         "translation": translation,
@@ -81,5 +102,7 @@ class Zikir {
         "count": count,
         "types": List<dynamic>.from(types.map((x) => x)),
         "timeRange": List<dynamic>.from(timeRange.map((x) => x)),
+        "isFavorited": isFavorited,
+        "isInVird": isInVird,
       };
 }

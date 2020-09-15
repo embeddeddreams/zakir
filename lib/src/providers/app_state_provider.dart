@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
+import 'package:zakir/constants.dart';
 import 'package:zakir/locator.dart';
 import 'package:zakir/src/helpers/check_version.dart';
 import 'package:zakir/src/services/storage_service.dart';
@@ -14,11 +16,17 @@ class AppStateProvider with ChangeNotifier {
   bool _isOnline = true;
   bool _isVersionChecked = false;
   Future<Null> isWorkingVersion;
+  List<int> _currentVirdContent = [1, 2, 3, 4, 5, 6];
+  List<int> _favoriteIds = [];
+  List _allZikirData = [];
 
   /* ---------------------------------------------Getters-------------------------------------------- */
 
   bool get isOnline => this._isOnline; //internet durumunu verir
   bool get loading => this._loading;
+  List<int> get currentVirdContent => this._currentVirdContent;
+  List<int> get favoriteIds => this._favoriteIds;
+  List<dynamic> get allZikirData => this._allZikirData;
 
 /* ---------------------------------------------Setters-------------------------------------------- */
 
@@ -89,5 +97,45 @@ class AppStateProvider with ChangeNotifier {
 
     if (!completer.isCompleted) completer.complete();
     isWorkingVersion = null;
+  }
+
+  addToVird(int newId) async {
+    if (!_currentVirdContent.contains(newId)) {
+      this._currentVirdContent.add(newId);
+      locator<StorageService>()
+          .setVirdContent(_currentVirdContent.map((e) => e.toString()).toList())
+          .then((_) {
+        notifyListeners();
+      });
+    }
+  }
+
+  addToFavorites(int newId) async {
+    if (!_favoriteIds.contains(newId)) {
+      this._favoriteIds.add(newId);
+      await locator<StorageService>()
+          .setFavorites(_favoriteIds.map((e) => e.toString()).toList());
+      notifyListeners();
+    }
+  }
+
+  deleteFromFavorites(int newId) async {
+    _favoriteIds = _favoriteIds.where((element) => element != newId).toList();
+    print("hop");
+    print(_favoriteIds);
+    await locator<StorageService>()
+        .setFavorites(_favoriteIds.map((e) => e.toString()).toList());
+    print("hop");
+    notifyListeners();
+  }
+
+  setAllData(incoming) async {
+    _allZikirData = json.decode(incoming) as List<dynamic>;
+
+    final tmp1 = await locator<StorageService>().getFavorites() ?? [];
+    _favoriteIds = tmp1.map((e) => int.parse(e)).toList();
+    print({"favorites", _favoriteIds});
+
+    notifyListeners();
   }
 }

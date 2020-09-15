@@ -1,12 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zakir/constants.dart';
 import 'package:zakir/src/models/enums.dart';
 import 'package:zakir/src/models/view_models/zikir_list_vm.dart';
-import 'package:zakir/src/pages/zikir.dart';
-import 'package:zakir/src/widgets/z_list_item.dart';
+import 'package:zakir/src/pages/zikir_page.dart';
+import 'package:zakir/src/providers/app_state_provider.dart';
+import 'package:zakir/src/widgets/zikir_group_item.dart';
 import 'package:zakir/src/widgets/zikir_item.dart';
 
 class Zikir {
@@ -30,6 +32,7 @@ class ListPage extends StatefulWidget {
 }
 
 class _ListPageState extends State<ListPage> with TickerProviderStateMixin {
+  AppStateProvider _provider;
   TabController _tabController;
   int _lastIndex = 0;
   int _lastType;
@@ -41,192 +44,167 @@ class _ListPageState extends State<ListPage> with TickerProviderStateMixin {
   void initState() {
     _tabController = new TabController(vsync: this, length: 2);
     _getLastPosition();
-    _loadData();
     super.initState();
-  }
-
-  _loadData() async {
-    String incoming = await DefaultAssetBundle.of(context)
-        .loadString("assets/data/data.json");
-    setState(() {
-      _allRawData = (json.decode(incoming) as List).map((e) {
-        var item = ZikirListVM.fromJson(e);
-        item.text = item.text ?? _formatSurah(item.textArray);
-        return item;
-      }).toList();
-      // _getProgress();
-    });
-  }
-
-  String _formatSurah(List<String> array) {
-    if (array.length > 2)
-      return array.join(' ۞ \n\n');
-    else
-      return array.join('۞');
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        new Container(
-          decoration: new BoxDecoration(color: AppColors.greyLight),
-          child: new TabBar(
-              controller: _tabController,
-              indicatorColor: AppColors.green,
-              indicatorSize: TabBarIndicatorSize.tab,
-              tabs: [
-                Tab(
-                  child: Text(
-                    "Tasnif Edilmiş",
-                    style: TextStyle(
-                      color: AppColors.green,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-                Tab(
-                  child: Text(
-                    "Hepsi",
-                    style: TextStyle(
-                      color: AppColors.green,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ]),
-        ),
-        Expanded(
-          child: Container(
-            color: Colors.white,
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                Stack(
-                  children: <Widget>[
-                    ListView(
-                      children: <Widget>[
-                        ZListItem(
-                          "Uyanınca Yapılan Zikirler",
-                          ZikirType.Awakening.index,
-                          AppIcons.awakening,
-                          onTap: () {
-                            _goToZikir(
-                              ZikirType.Awakening.index,
-                              typeKey: "awakening",
-                            );
-                          },
+    _provider = Provider.of<AppStateProvider>(context, listen: false);
+    return Container(
+      color: Colors.white,
+      child: Stack(
+        children: <Widget>[
+          ListView(
+            children: <Widget>[
+              ZikirGroupItem(
+                "Uyanınca Yapılan Zikirler",
+                ZikirType.Awakening.index,
+                AppIcons.awakening,
+                _allRawData
+                    .where((item) =>
+                        item.types.contains(ZikirType.Awakening.index))
+                    .map((item) => item.id as int)
+                    .toList(),
+                onTap: () {
+                  _goToZikirGroup(
+                    ZikirType.Awakening.index,
+                    ZikirPageType.Group.index,
+                    typeKey: "awakening",
+                  );
+                },
+              ),
+              ZikirGroupItem(
+                "Sabah Zikirleri",
+                ZikirType.Morning.index,
+                AppIcons.morning,
+                _allRawData
+                    .where(
+                        (item) => item.types.contains(ZikirType.Morning.index))
+                    .map((item) => item.id as int)
+                    .toList(),
+                subtitle: "Sabah namazı ile öğle namazı arasında",
+                onTap: () {
+                  _goToZikirGroup(
+                    ZikirType.Morning.index,
+                    ZikirPageType.Group.index,
+                    typeKey: "morning",
+                  );
+                },
+              ),
+              ZikirGroupItem(
+                "Akşam Zikirleri",
+                ZikirType.Evening.index,
+                AppIcons.evening,
+                _allRawData
+                    .where(
+                        (item) => item.types.contains(ZikirType.Evening.index))
+                    .map((item) => item.id as int)
+                    .toList(),
+                subtitle: "İkindi kerahet vakti girmesinden itibaren",
+                onTap: () {
+                  _goToZikirGroup(
+                      ZikirType.Evening.index, ZikirPageType.Group.index);
+                },
+              ),
+              ZikirGroupItem(
+                "Üzüntü ve Keder Anında Yapılan Dualar",
+                ZikirType.Sadness.index,
+                AppIcons.sadness,
+                _allRawData
+                    .where(
+                        (item) => item.types.contains(ZikirType.Sadness.index))
+                    .map((item) => item.id as int)
+                    .toList(),
+                onTap: () {
+                  _goToZikirGroup(
+                      ZikirType.Sadness.index, ZikirPageType.Single.index);
+                },
+              ),
+              ZikirGroupItem(
+                "Sıkıntı Anında Yapılan Dualar",
+                ZikirType.Trouble.index,
+                AppIcons.trouble,
+                _allRawData
+                    .where(
+                        (item) => item.types.contains(ZikirType.Trouble.index))
+                    .map((item) => item.id as int)
+                    .toList(),
+                onTap: () {
+                  _goToZikirGroup(
+                      ZikirType.Trouble.index, ZikirPageType.Single.index);
+                },
+              ),
+              // FlatButton(
+              //   child: Text(
+              //     "Bildirim",
+              //     style: TextStyle(
+              //         color: AppColors.green.withAlpha(200)),
+              //   ),
+              //   onPressed: showNotification,
+              // ),
+            ],
+          ),
+          _lastType != null && _lastIndex > 0
+              ? Positioned(
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      height: 50,
+                      margin: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(width: 1, color: AppColors.green),
+                      ),
+                      child: FlatButton(
+                        // padding: EdgeInsets.zero,
+                        child: Text(
+                          "Kaldığın zikirden devam et",
+                          style:
+                              TextStyle(color: AppColors.green.withAlpha(200)),
                         ),
-                        ZListItem(
-                          "Sabah Zikirleri",
-                          ZikirType.Morning.index,
-                          AppIcons.morning,
-                          subtitle: "Sabah namazı ile öğle namazı arasında",
-                          onTap: () {
-                            _goToZikir(
-                              ZikirType.Morning.index,
-                              typeKey: "morning",
-                            );
-                          },
-                        ),
-                        ZListItem(
-                          "Akşam Zikirleri",
-                          ZikirType.Evening.index,
-                          AppIcons.evening,
-                          subtitle: "İkindi kerahet vakti girmesinden itibaren",
-                          onTap: () {
-                            _goToZikir(ZikirType.Evening.index);
-                          },
-                        ),
-                        ZListItem(
-                          "Üzüntü ve Keder Anında Yapılan Dualar",
-                          ZikirType.Sadness.index,
-                          AppIcons.sadness,
-                          onTap: () {
-                            _goToZikir(ZikirType.Sadness.index);
-                          },
-                        ),
-                        ZListItem(
-                          "Sıkıntı Anında Yapılan Dualar",
-                          ZikirType.Trouble.index,
-                          AppIcons.trouble,
-                          onTap: () {
-                            _goToZikir(ZikirType.Trouble.index);
-                          },
-                        ),
-                        // FlatButton(
-                        //   child: Text(
-                        //     "Bildirim",
-                        //     style: TextStyle(
-                        //         color: AppColors.green.withAlpha(200)),
-                        //   ),
-                        //   onPressed: showNotification,
-                        // ),
-                      ],
-                    ),
-                    _lastType != null && _lastIndex > 0
-                        ? Positioned(
-                            child: Align(
-                              alignment: Alignment.bottomCenter,
-                              child: Container(
-                                height: 50,
-                                margin: EdgeInsets.all(20),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  border: Border.all(
-                                      width: 1, color: AppColors.green),
-                                ),
-                                child: FlatButton(
-                                  // padding: EdgeInsets.zero,
-                                  child: Text(
-                                    "Kaldığın zikirden devam et",
-                                    style: TextStyle(
-                                        color: AppColors.green.withAlpha(200)),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.of(context)
-                                        .push(
-                                      MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            ZikirPage(
-                                          type: _lastType,
-                                          lastIndex: _lastIndex,
-                                        ),
-                                      ),
-                                    )
-                                        .then((_) {
-                                      _getLastPosition();
-                                    });
-                                  },
+                        onPressed: () {
+                          if (_lastType != null)
+                            Navigator.of(context)
+                                .push(
+                              MaterialPageRoute(
+                                builder: (BuildContext context) => ZikirPage(
+                                  rawData: _provider.allZikirData
+                                      .where(
+                                          (e) => e["types"].contains(_lastType))
+                                      .toList(),
+                                  type: ZikirPageType.Group.index,
+                                  lastIndex: _lastIndex,
+                                  favoriteIds: _provider.favoriteIds,
                                 ),
                               ),
-                            ),
-                          )
-                        : Container(),
-                  ],
-                ),
-                ListView.builder(
-                  itemCount: _allRawData.length,
-                  itemBuilder: (BuildContext ctxt, int index) =>
-                      ZikirItem(_allRawData[index]),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
+                            )
+                                .then((_) {
+                              _getLastPosition();
+                            });
+                        },
+                      ),
+                    ),
+                  ),
+                )
+              : Container(),
+        ],
+      ),
     );
   }
 
-  _goToZikir(int typeIndex, {String typeKey}) {
-    _saveLastType(typeIndex);
+  _goToZikirGroup(int groupIndex, int zikirPageType, {String typeKey}) {
+    _saveLastType(groupIndex);
     Navigator.of(context)
         .push(
       MaterialPageRoute(
-        builder: (BuildContext context) =>
-            ZikirPage(type: typeIndex, typeKey: typeKey),
+        builder: (BuildContext context) => ZikirPage(
+          rawData: _provider.allZikirData
+              .where((e) => e["types"].contains(groupIndex))
+              .toList(),
+          type: zikirPageType,
+          typeKey: typeKey,
+          favoriteIds: _provider.favoriteIds,
+        ),
       ),
     )
         .then((_) {
@@ -252,25 +230,34 @@ class _ListPageState extends State<ListPage> with TickerProviderStateMixin {
     return instances.getInt(key + "_" + indexInGroup.toString()) ?? 0;
   }
 
+  addAllToVird(List<int> ids) {
+    final curr = _provider.currentVirdContent;
+    print(curr.toString());
+    ids.forEach((newId) {
+      print(newId.toString());
+      if (!curr.contains(newId)) _provider.addToVird(newId);
+    });
+  }
+
   //  Stack(
   //                 children: <Widget>[
   //                   ListView(
   //                     children: <Widget>[
   //                       ZikirItem()
-  // ZListItem(
+  // ZikirGroupItem(
   //   "Üzüntü ve Keder Anında Yapılan Dualar",
   //   ZikirType.Sadness.index,
   //   AppIcons.sadness,
   //   onTap: () {
-  //     _goToZikir(ZikirType.Sadness.index);
+  //     _goToZikirGroup(ZikirType.Sadness.index);
   //   },
   // ),
-  // ZListItem(
+  // ZikirGroupItem(
   //   "Sıkıntı Anında Yapılan Dualar",
   //   ZikirType.Trouble.index,
   //   AppIcons.trouble,
   //   onTap: () {
-  //     _goToZikir(ZikirType.Trouble.index);
+  //     _goToZikirGroup(ZikirType.Trouble.index);
   //   },
   // ),
   //       ],
