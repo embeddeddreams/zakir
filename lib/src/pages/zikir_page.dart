@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:zakir/src/models/entities/zikir.dart';
-import 'package:zakir/src/models/enums.dart';
 import 'package:zakir/src/providers/app_state_provider.dart';
 import 'package:zakir/src/widgets/player_trigger.dart';
 import 'package:zakir/src/widgets/ripple_effect.dart';
@@ -107,84 +106,115 @@ class _ZikirPageState extends State<ZikirPage> {
       pageKey: pageKey,
       child: Scaffold(
         key: _scaffoldKey,
-        body: SafeArea(
-          child: SlidingUpPanel(
-            controller: _pc,
-            maxHeight: 100,
-            minHeight: 0,
-            defaultPanelState: PanelState.CLOSED,
-            panel: PlayerTrigger(_pc, _calculateStartPoint()),
-            body: data.length > 0
-                ? Stack(
-                    children: <Widget>[
-                      RippleEffect(
-                        pageKey: pageKey,
-                        effectKey: effectKey,
-                        animationDuration: const Duration(milliseconds: 300),
-                        delay: const Duration(milliseconds: 0),
-                        inflateMultiplier: 1.0,
-                        color: AppColors.green.withAlpha(35),
-                        child: GestureDetector(
-                          onHorizontalDragEnd: (details) {
-                            if (details.velocity.pixelsPerSecond.dx < 0)
-                              _next();
-                            if (details.velocity.pixelsPerSecond.dx > 0)
-                              _previous();
-                          },
-                          onTap: _increment,
-                          onLongPress: _decrement,
-                          // borderRadius:BorderRadius.all(Radius.circular(50)),
-                          // radius: 500,
-                          // splashFactory: InkRipple
-                          //     .splashFactory, //  CustomSplashFactory(),
-                          // splashColor: _counter < data[_index].count
-                          //     ? AppColors.greenLight.withOpacity(0.3)
-                          //     : Colors.transparent,
-                          // highlightColor: Colors.transparent,
-                          // enableFeedback: false,
-                          child: Container(
-                            height: MediaQuery.of(context).size.height,
-                            width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.fromLTRB(30, 40, 30, 75),
-                            // color: AppColors.greyLight,
-                            child: ListView(
-                              controller: _scrollController,
-                              children: <Widget>[
-                                Container(
-                                  padding: EdgeInsets.only(bottom: 20),
-                                  child: Row(
+        body: Container(
+          child: Stack(
+            children: [
+              SafeArea(
+                child: SlidingUpPanel(
+                  controller: _pc,
+                  maxHeight: 100,
+                  minHeight: 0,
+                  defaultPanelState: PanelState.CLOSED,
+                  panel: PlayerTrigger(_pc, _calculateStartPoint()),
+                  body: data.length > 0
+                      ? Stack(
+                          children: <Widget>[
+                            RippleEffect(
+                              pageKey: pageKey,
+                              effectKey: effectKey,
+                              animationDuration:
+                                  const Duration(milliseconds: 300),
+                              delay: const Duration(milliseconds: 0),
+                              inflateMultiplier: 1.0,
+                              color: AppColors.green.withAlpha(35),
+                              child: GestureDetector(
+                                onHorizontalDragEnd: (details) {
+                                  if (details.velocity.pixelsPerSecond.dx < 0)
+                                    _next();
+                                  if (details.velocity.pixelsPerSecond.dx > 0)
+                                    _previous();
+                                },
+                                onTap: _increment,
+                                onLongPress: _decrement,
+                                // borderRadius:BorderRadius.all(Radius.circular(50)),
+                                // radius: 500,
+                                // splashFactory: InkRipple
+                                //     .splashFactory, //  CustomSplashFactory(),
+                                // splashColor: _counter < data[_index].count
+                                //     ? AppColors.greenLight.withOpacity(0.3)
+                                //     : Colors.transparent,
+                                // highlightColor: Colors.transparent,
+                                // enableFeedback: false,
+                                child: Container(
+                                  height: MediaQuery.of(context).size.height,
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.fromLTRB(30, 40, 30, 95),
+                                  // color: AppColors.greyLight,
+                                  child: ListView(
+                                    controller: _scrollController,
                                     children: <Widget>[
-                                      Flexible(
-                                        fit: FlexFit.loose,
-                                        child: Text(
-                                          data[_index].text,
-                                          textDirection: TextDirection.rtl,
-                                          textAlign: TextAlign.justify,
-                                          style: TextStyle(
-                                            fontSize: 27,
-                                            color: AppColors.indigoDark,
-                                            // fontWeight: FontWeight.w500,
-                                            fontFamily: "Amiri-Quran",
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                data[_index].transcription.isNotEmpty
-                                    ? Container(
-                                        margin: EdgeInsets.only(bottom: 10),
+                                      Container(
+                                        padding: EdgeInsets.only(bottom: 20),
                                         child: Row(
                                           children: <Widget>[
                                             Flexible(
                                               fit: FlexFit.loose,
                                               child: Text(
-                                                data[_index].transcription,
+                                                data[_index].text,
+                                                textDirection:
+                                                    TextDirection.rtl,
+                                                textAlign: TextAlign.justify,
+                                                style: TextStyle(
+                                                  fontSize: 27,
+                                                  color: AppColors.indigoDark,
+                                                  // fontWeight: FontWeight.w500,
+                                                  fontFamily: "Amiri-Quran",
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      data[_index].transcription.isNotEmpty
+                                          ? Container(
+                                              margin:
+                                                  EdgeInsets.only(bottom: 10),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Flexible(
+                                                    fit: FlexFit.loose,
+                                                    child: Text(
+                                                      data[_index]
+                                                          .transcription,
+                                                      textAlign:
+                                                          TextAlign.justify,
+                                                      style: GoogleFonts
+                                                          .montserrat(
+                                                        textStyle: TextStyle(
+                                                          color: Colors.black54,
+                                                          fontStyle:
+                                                              FontStyle.italic,
+                                                          fontSize: 16,
+                                                          height: 1.3,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          : Container(),
+                                      Container(
+                                        child: Row(
+                                          children: <Widget>[
+                                            Flexible(
+                                              fit: FlexFit.loose,
+                                              child: Text(
+                                                data[_index].translation,
                                                 textAlign: TextAlign.justify,
                                                 style: GoogleFonts.montserrat(
                                                   textStyle: TextStyle(
-                                                    color: Colors.black54,
-                                                    fontStyle: FontStyle.italic,
+                                                    color: Colors.black87,
                                                     fontSize: 16,
                                                     height: 1.3,
                                                   ),
@@ -193,170 +223,148 @@ class _ZikirPageState extends State<ZikirPage> {
                                             ),
                                           ],
                                         ),
-                                      )
-                                    : Container(),
-                                Container(
-                                  child: Row(
-                                    children: <Widget>[
-                                      Flexible(
-                                        fit: FlexFit.loose,
-                                        child: Text(
-                                          data[_index].translation,
-                                          textAlign: TextAlign.justify,
-                                          style: GoogleFonts.montserrat(
-                                            textStyle: TextStyle(
-                                              color: Colors.black87,
-                                              fontSize: 16,
-                                              height: 1.3,
-                                            ),
-                                          ),
-                                        ),
                                       ),
                                     ],
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 30,
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.fromLTRB(20, 0, 20, 5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            // crossAxisAlignment: CrossAxisAlignment.end,
-                            children: <Widget>[
-                              Row(
-                                children: <Widget>[
-                                  // data[_index].timeRange == null
-                                  //     ? Container()
-                                  //     : Container(
-                                  //         margin: const EdgeInsets.only(right: 20),
-                                  //         width: 32,
-                                  //         height: 32,
-                                  //         child: IconButton(
-                                  //           padding: EdgeInsets.zero,
-                                  //           onPressed: () {
-                                  //             _pc.open();
-                                  //           },
-                                  //           icon: Icon(
-                                  //             Icons.keyboard_arrow_up,
-                                  //             color: Colors.black54,
-                                  //             size: 32,
-                                  //           ),
-                                  //         ),
-                                  //       ),
-
-                                  Container(
-                                    margin: const EdgeInsets.only(right: 10),
-                                    width: 32,
-                                    height: 32,
-                                    child: IconButton(
-                                      padding: EdgeInsets.zero,
-                                      onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          child: SourceDialogBox(
-                                            narration: data[_index].narration,
-                                            authenticity:
-                                                data[_index].authenticity,
-                                            reference: data[_index].reference,
-                                            height: _setHeight(data[_index]),
-                                          ),
-                                        );
-                                      },
-                                      icon: Icon(
-                                        Icons.info_outline,
-                                        color: AppColors.green,
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(right: 10),
-                                    width: 32,
-                                    height: 32,
-                                    child: IconButton(
-                                      padding: EdgeInsets.zero,
-                                      onPressed: () {
-                                        data[_index].isFavorited
-                                            ? deleteFromFavorites(
-                                                data[_index].id)
-                                            : addToFavorites(data[_index].id);
-                                      },
-                                      icon: Icon(
-                                        Icons.favorite,
-                                        color: data[_index].isFavorited
-                                            ? AppColors.green
-                                            : Colors.black26,
-                                      ),
-                                    ),
-                                  ),
-                                ],
                               ),
-                              // widget.type == ZikirPageType.Group.index ?
-                              Container(
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: <Widget>[
-                                    Text(
-                                      "$_counter",
-                                      style: TextStyle(
-                                        color: _counter > 0
-                                            ? AppColors.green
-                                            : Colors.black26,
-                                        fontSize: _counter > 0 ? 32 : 24,
-                                        fontWeight: _counter > 0
-                                            ? FontWeight.bold
-                                            : FontWeight.normal,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(bottom: 4),
-                                      child: Text(
-                                        " / ${data[_index].count}",
-                                        style: TextStyle(
-                                          color: Colors.black26,
-                                          fontSize: 18,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                            ),
+                            SliderTheme(
+                              data: SliderThemeData(
+                                  trackHeight: 12,
+                                  activeTrackColor: AppColors.green,
+                                  inactiveTrackColor:
+                                      AppColors.green.withAlpha(40),
+                                  thumbColor: Colors.transparent,
+                                  thumbShape: RoundSliderThumbShape(
+                                      enabledThumbRadius: 0)),
+                              child: Container(
+                                height: 12,
+                                width: MediaQuery.of(context).size.width,
+                                child: Slider(
+                                  min: 0,
+                                  max: _totalCharLength.toDouble(),
+                                  value: _elapsedCharLength.toDouble(),
+                                  onChanged: (val) {},
                                 ),
                               ),
-                              // : Container(),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        top: 10,
-                        child: SliderTheme(
-                          data: SliderThemeData(
-                              trackHeight: 12,
-                              activeTrackColor: AppColors.green,
-                              inactiveTrackColor: AppColors.green.withAlpha(40),
-                              thumbColor: Colors.transparent,
-                              thumbShape:
-                                  RoundSliderThumbShape(enabledThumbRadius: 0)),
-                          child: Container(
-                            height: 12,
-                            width: MediaQuery.of(context).size.width,
-                            child: Slider(
-                              min: 0,
-                              max: _totalCharLength.toDouble(),
-                              value: _elapsedCharLength.toDouble(),
-                              onChanged: (val) {},
+                            ),
+                          ],
+                        )
+                      : Center(child: CircularProgressIndicator()),
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.fromLTRB(20, 5, 20, 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    // crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          // data[_index].timeRange == null
+                          //     ? Container()
+                          //     : Container(
+                          //         margin: const EdgeInsets.only(right: 20),
+                          //         width: 32,
+                          //         height: 32,
+                          //         child: IconButton(
+                          //           padding: EdgeInsets.zero,
+                          //           onPressed: () {
+                          //             _pc.open();
+                          //           },
+                          //           icon: Icon(
+                          //             Icons.keyboard_arrow_up,
+                          //             color: Colors.black54,
+                          //             size: 32,
+                          //           ),
+                          //         ),
+                          //       ),
+
+                          Container(
+                            margin: const EdgeInsets.only(right: 10),
+                            width: 32,
+                            height: 32,
+                            child: IconButton(
+                              padding: EdgeInsets.zero,
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  child: SourceDialogBox(
+                                    narration: data[_index].narration,
+                                    authenticity: data[_index].authenticity,
+                                    reference: data[_index].reference,
+                                    height: _setHeight(data[_index]),
+                                  ),
+                                );
+                              },
+                              icon: Icon(
+                                Icons.info_outline,
+                                color: AppColors.green,
+                              ),
                             ),
                           ),
+                          Container(
+                            margin: const EdgeInsets.only(right: 10),
+                            width: 32,
+                            height: 32,
+                            child: IconButton(
+                              padding: EdgeInsets.zero,
+                              onPressed: () {
+                                data[_index].isFavorited
+                                    ? deleteFromFavorites(data[_index].id)
+                                    : addToFavorites(data[_index].id);
+                              },
+                              icon: Icon(
+                                Icons.favorite,
+                                color: data[_index].isFavorited
+                                    ? AppColors.green
+                                    : Colors.black26,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      // widget.type == ZikirPageType.Group.index ?
+                      Container(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            Text(
+                              "$_counter",
+                              style: TextStyle(
+                                color: _counter > 0
+                                    ? AppColors.green
+                                    : Colors.black26,
+                                fontSize: _counter > 0 ? 32 : 24,
+                                fontWeight: _counter > 0
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 4),
+                              child: Text(
+                                " / ${data[_index].count}",
+                                style: TextStyle(
+                                  color: Colors.black26,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
+                      // : Container(),
                     ],
-                  )
-                : Center(child: CircularProgressIndicator()),
+                  ),
+                ),
+              )
+            ],
           ),
         ),
       ),

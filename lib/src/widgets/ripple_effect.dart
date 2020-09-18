@@ -105,7 +105,7 @@ class RippleEffect extends StatefulWidget {
     VoidCallback callback,
   ) {
     final rippleEffectState = rippleEffectKey?.currentState;
-
+    
     final rippleState = rippleEffectState.widget?.pageKey?.currentState;
 
     return rippleState?.startAnimation(
